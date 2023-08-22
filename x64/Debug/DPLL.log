@@ -1,2 +1,7 @@
 ﻿  CNF_Reader.c
-  DPLL.vcxproj -> D:\SAVE\code\c\DPLL\x64\Debug\DPLL.exe
+  MAIN.c
+E:\U\DPLL\MAIN.c(6,2): warning C4013: “ReadCNF”未定义；假设外部返回 int
+E:\U\DPLL\MAIN.c(6,10): warning C4013: “GetLine_Exclude_C”未定义；假设外部返回 int
+  Solver.c
+  正在生成代码...
+  DPLL.vcxproj -> E:\U\DPLL\x64\Debug\DPLL.exe

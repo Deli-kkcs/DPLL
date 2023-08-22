@@ -23,5 +23,11 @@
     <ClCompile Include="CNF_Reader.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Solver.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MAIN.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
