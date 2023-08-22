@@ -22,7 +22,7 @@ struct ValueHeadNode
 	bool isTrue;									//取值是否为真
 	struct ValueNode* latestValue_in_value;			//该变量最后一次出现的位置
 
-	struct ValueNode* valueSpeciallyInValueHead;	//变量头结点特有的变量节点类型
+	//struct ValueNode* valueSpeciallyInValueHead;	//变量头结点特有的变量节点类型
 	struct ValueNode* nextValue_in_value;			//该变量下一次出现的位置
 
 	struct ValueHeadNode* nextValueHead;			//下一个变量头结点
@@ -35,7 +35,7 @@ struct ClauseHeadNode
 	//int count_activeValue;
 	struct ValueNode* latestValue_in_clause;		//子句中最后一个变量
 
-	struct ValueNode* valueSpeciallyInClauseHead;	//子句头结点特有的变量节点类型
+	//struct ValueNode* valueSpeciallyInClauseHead;	//子句头结点特有的变量节点类型
 	struct ValueNode* nextValue_in_clause;			
 
 	struct ClauseHeadNode* nextClauseHead;
@@ -80,3 +80,12 @@ void CreateValueHeadLink();
 void CreateClauseHeadLink();
 void ReadClause(int index_clause);
 void ReadCNF(char t);
+
+/*Solver中函数声明*/
+void GetSingleValue_in_clause(int* f_index_value, bool* f_isTrue);
+void GetSingleValue_in_value(int* f_index_value, bool* f_isTrue);
+int ChooseValue();
+void SetValue(int* f_index_value, bool* f_isTrue);
+bool CheckEmptyCNF();
+bool CheckEmptyClause();
+bool DPLL();

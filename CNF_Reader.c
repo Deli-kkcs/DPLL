@@ -50,7 +50,8 @@ void AddNextValue_of_Clause(int index_clause,struct ValueNode* new_value)
 	if (!clausesHead[index_clause].latestValue_in_clause)
 	{
 		clausesHead[index_clause].nextValue_in_clause = new_value;
-		new_value->preValue_in_clause = clausesHead[index_clause].valueSpeciallyInClauseHead;
+		//new_value->preValue_in_clause = clausesHead[index_clause].valueSpeciallyInClauseHead;
+		new_value->preValue_in_clause = NULL;
 	}
 	else
 	{
@@ -64,7 +65,8 @@ void AddNextValue_of_Value(int index_value,struct ValueNode* new_value)
 	if (!valuesHead[index_value].nextValue_in_value)
 	{
 		valuesHead[index_value].nextValue_in_value = new_value;
-		new_value->preValue_in_value = valuesHead[index_value].valueSpeciallyInValueHead;
+		//new_value->preValue_in_value = valuesHead[index_value].valueSpeciallyInValueHead;
+		new_value->preValue_in_value = NULL;
 	}
 	else
 	{
@@ -146,16 +148,18 @@ void ReadCNF(char t)
 	{
 		valuesHead[i].isTrue = false;
 		valuesHead[i].nextValue_in_value = NULL;
-		valuesHead[i].valueSpeciallyInValueHead = NULL;
-		valuesHead[i].latestValue_in_value = valuesHead[i].valueSpeciallyInValueHead;
+		//valuesHead[i].valueSpeciallyInValueHead = NULL;
+		//valuesHead[i].latestValue_in_value = valuesHead[i].valueSpeciallyInValueHead;
+		valuesHead[i].latestValue_in_value = NULL;
 	}
 	for (int i = 0; i < count_clause; i++)
 	{
 		clausesHead[i].nextValue_in_clause = NULL;
 		clausesHead[i].nextClauseHead = NULL;
 		clausesHead[i].preClauseHead = NULL;
-		clausesHead[i].valueSpeciallyInClauseHead = NULL;
-		clausesHead[i].latestValue_in_clause = clausesHead[i].valueSpeciallyInClauseHead;
+		/*clausesHead[i].valueSpeciallyInClauseHead = NULL;
+		clausesHead[i].latestValue_in_clause = clausesHead[i].valueSpeciallyInClauseHead;*/
+		clausesHead[i].latestValue_in_clause = NULL;
 
 		ReadClause(i);
 	}

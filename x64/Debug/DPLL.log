@@ -1,7 +1,7 @@
 ﻿  CNF_Reader.c
-  MAIN.c
-E:\U\DPLL\MAIN.c(6,2): warning C4013: “ReadCNF”未定义；假设外部返回 int
-E:\U\DPLL\MAIN.c(6,10): warning C4013: “GetLine_Exclude_C”未定义；假设外部返回 int
+E:\U\DPLL\Definition.h(49,2): warning C4091: “typedef ”: 没有声明变量时忽略“Stack_Value”的左侧
+E:\U\DPLL\CNF_Reader.c(53,61): error C2039: "valueSpeciallyInClauseHead": 不是 "ClauseHeadNode" 的成员
+E:\U\DPLL\Definition.h(33,8): message : 参见“ClauseHeadNode”的声明
   Solver.c
+E:\U\DPLL\Definition.h(49,2): warning C4091: “typedef ”: 没有声明变量时忽略“Stack_Value”的左侧
   正在生成代码...
-  DPLL.vcxproj -> E:\U\DPLL\x64\Debug\DPLL.exe
