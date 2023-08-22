@@ -42,31 +42,13 @@ struct ClauseHeadNode
 	struct ClauseHeadNode* preClauseHead;
 }/*子句头结点数组*/clausesHead[10000] ,/*子句头结点的头结点*/ clausesHeadHead;
 
-typedef struct Stack_Value 
+struct Stack_Value 
 {
 	struct ValueNode m_value;
 	struct Stack_Value* next;
 };
-//stack为当前的链栈，a表示入栈元素
-struct Stack_Value* push(struct Stack_Value* stack, struct ValueNode value) 
-{
-	struct Stack_Value* new_elem = (struct Stack_Value*)malloc(sizeof(struct Stack_Value));
-	if (!new_elem)
-		return new_elem;
-	new_elem->m_value = value;
-	new_elem->next = stack;
-	stack = new_elem;
-	return stack;
-}
-struct Stack_Value* pop(struct Stack_Value* stack) 
-{
-	if (!stack) 
-		return stack;
-	struct Stack_Value* p = stack;
-	stack = stack->next;
-	free(p);
-	return stack;
-}
+struct Stack_Value* MyPush(struct Stack_Value* stack, struct ValueNode value);
+struct Stack_Value* MyPop(struct Stack_Value* stack);
 
 /*CNF_Reader中函数声明*/
 void MyGetString(char t[10]);
@@ -84,8 +66,9 @@ void ReadCNF(char t);
 /*Solver中函数声明*/
 void GetSingleValue_in_clause(int* f_index_value, bool* f_isTrue);
 void GetSingleValue_in_value(int* f_index_value, bool* f_isTrue);
-int ChooseValue();
-void SetValue(int* f_index_value, bool* f_isTrue);
+void ChooseValue(int* f_index_value);
+void SetValue(int* f_index_value, bool* f_isTrue, struct Stack_Value* f_stack_RemovedValue);
 bool CheckEmptyCNF();
 bool CheckEmptyClause();
+void RevertChange(struct Stack_Value* f_stack_RemovedValue);
 bool DPLL();

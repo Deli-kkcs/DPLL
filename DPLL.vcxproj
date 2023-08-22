@@ -133,6 +133,7 @@
     <ClCompile Include="CNF_Reader.c" />
     <ClCompile Include="MAIN.c" />
     <ClCompile Include="Solver.c" />
+    <ClCompile Include="Stack.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
