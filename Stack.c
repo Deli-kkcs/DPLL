@@ -19,3 +19,44 @@ struct Stack_Value* MyPop(struct Stack_Value* stack)
 	free(p);
 	return stack;
 }
+struct Stack_ClauseHead* MyPush_2(struct Stack_ClauseHead* stack, struct ClauseHeadNode value)
+{
+	struct Stack_ClauseHead* new_elem = (struct Stack_ClauseHead*)malloc(sizeof(struct Stack_ClauseHead));
+	if (!new_elem)
+		return new_elem;
+	new_elem->m_value = value;
+	new_elem->next = stack;
+	stack = new_elem;
+	return stack;
+}
+
+struct Stack_ClauseHead* MyPop_2(struct Stack_ClauseHead* stack)
+{
+	if (!stack)
+		return stack;
+	struct Stack_ClauseHead* p = stack;
+	stack = stack->next;
+	free(p);
+	return stack;
+}
+
+struct Stack_ValueHasBeenSet* MyPush_3(struct Stack_ValueHasBeenSet* stack, int value)
+{
+	struct Stack_ValueHasBeenSet* new_elem = (struct Stack_ValueHasBeenSet*)malloc(sizeof(struct Stack_ValueHasBeenSet));
+	if (!new_elem)
+		return new_elem;
+	new_elem->m_value = value;
+	new_elem->next = stack;
+	stack = new_elem;
+	return stack;
+}
+
+struct Stack_ValueHasBeenSet* MyPop_3(struct Stack_ValueHasBeenSet* stack)
+{
+	if (!stack)
+		return stack;
+	struct Stack_ValueHasBeenSet* p = stack;
+	stack = stack->next;
+	free(p);
+	return stack;
+}

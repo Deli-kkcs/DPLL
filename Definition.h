@@ -49,7 +49,21 @@ struct Stack_Value
 };
 struct Stack_Value* MyPush(struct Stack_Value* stack, struct ValueNode value);
 struct Stack_Value* MyPop(struct Stack_Value* stack);
-
+struct Stack_ClauseHead
+{
+	struct ClauseHeadNode m_value;
+	struct Stack_ClauseHead* next;
+};
+struct Stack_ClauseHead* MyPush_2(struct Stack_ClauseHead* stack, struct ClauseHeadNode value);
+struct Stack_ClauseHead* MyPop_2(struct Stack_ClauseHead* stack);
+struct Stack_ValueHasBeenSet
+{
+	int m_value;// 0无 1真 -1假
+	struct Stack_ValueHasBeenSet* next;
+};
+struct Stack_ValueHasBeenSet* MyPush_3(struct Stack_ValueHasBeenSet* stack, int value);
+struct Stack_ValueHasBeenSet* MyPop_3(struct Stack_ValueHasBeenSet* stack);
+//struct Stack_ValueHasBeenSet* MyPush(struct Stack_ValueHasBeenSet* stack, int truth);
 /*CNF_Reader中函数声明*/
 void MyGetString(char t[10]);
 char MyGetChar();
@@ -64,11 +78,23 @@ void ReadClause(int index_clause);
 void ReadCNF(char t);
 
 /*Solver中函数声明*/
-void GetSingleValue_in_clause(int* f_index_value, bool* f_isTrue);
+void/* struct ClauseHeadNode* */ GetSingleValue_in_clause(int* f_index_value, bool** f_isTrue);
 void GetSingleValue_in_value(int* f_index_value, bool* f_isTrue);
 void ChooseValue(int* f_index_value);
-void SetValue(int* f_index_value, bool* f_isTrue, struct Stack_Value* f_stack_RemovedValue);
+void SetValue
+(
+	int* f_index_value,
+	bool* f_isTrue,
+	struct Stack_Value* f_stack_RemovedValue,
+	struct Stack_ClauseHead* f_stack_RemovedClauseHead,
+	struct Stack_ValueHasBeenSet* f_stack_SetValue
+);
 bool CheckEmptyCNF();
 bool CheckEmptyClause();
-void RevertChange(struct Stack_Value* f_stack_RemovedValue);
+void RevertChange
+(
+	struct Stack_Value* f_stack_RemovedValue,
+	struct Stack_ClauseHead* f_stack_RemovedClauseHead,
+	struct Stack_ValueHasBeenSet* f_stack_SetValue
+);
 bool DPLL();
