@@ -1,3 +1,6 @@
+#ifndef DEFINITION_H_
+#define DEFINITION_H_
+
 #define _CRT_SECURE_NO_WARNINGS
 #include<stdio.h>
 #include<stdbool.h>
@@ -99,3 +102,4 @@ void RevertChange
 	struct Stack_ValueHead* f_stack_RemovedValueHead
 );
 bool DPLL();
+#endif // !DEFINATION_H_

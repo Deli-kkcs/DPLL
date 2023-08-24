@@ -130,10 +130,10 @@
     <ClInclude Include="Definition.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CNF_Reader.c" />
-    <ClCompile Include="MAIN.c" />
-    <ClCompile Include="Solver.c" />
-    <ClCompile Include="Stack.c" />
+    <ClCompile Include="CNF_Reader.cpp" />
+    <ClCompile Include="MAIN.cpp" />
+    <ClCompile Include="Solver.cpp" />
+    <ClCompile Include="Stack.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

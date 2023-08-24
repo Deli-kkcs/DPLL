@@ -20,16 +20,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CNF_Reader.c">
+    <ClCompile Include="CNF_Reader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Solver.c">
+    <ClCompile Include="Solver.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="MAIN.c">
+    <ClCompile Include="MAIN.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Stack.c">
+    <ClCompile Include="Stack.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

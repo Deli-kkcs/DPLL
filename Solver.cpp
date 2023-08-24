@@ -1,4 +1,5 @@
 #include"Definition.h"
+extern int count_value, count_clause;
 void/* struct ClauseHeadNode* */ GetSingleValue_in_clause(int * f_index_value , bool** f_isTrue)
 {
 	struct ClauseHeadNode* this_clauseHead = clausesHeadHead.nextClauseHead;
@@ -102,10 +103,10 @@ void RevertChange
 }
 bool DPLL()
 {
-	struct Stack_Value* stack_RemovedValue = malloc(sizeof(struct Stack_Value));
-	struct Stack_ClauseHead* stack_RemovedClauseHead = malloc(sizeof(struct Stack_ClauseHead));
-	struct Stack_ValueHead* stack_RemovedValueHead = malloc(sizeof(struct Stack_ValueHead));
-	int* index_value_p = malloc(sizeof(int));
+	struct Stack_Value* stack_RemovedValue = (struct Stack_Value*)malloc(sizeof(struct Stack_Value));
+	struct Stack_ClauseHead* stack_RemovedClauseHead = (struct Stack_ClauseHead*)malloc(sizeof(struct Stack_ClauseHead));
+	struct Stack_ValueHead* stack_RemovedValueHead = (struct Stack_ValueHead*)malloc(sizeof(struct Stack_ValueHead));
+	int* index_value_p = (int*)malloc(sizeof(int));
 	bool* isTrue = (bool*)malloc(sizeof(bool));
 	while (1)
 	{
@@ -115,7 +116,7 @@ bool DPLL()
 		SetValue(index_value_p, isTrue, stack_RemovedValue , stack_RemovedClauseHead, stack_RemovedValueHead);
 	}
 	if(!isTrue)
-		isTrue = malloc(sizeof(bool));
+		isTrue = (bool*)malloc(sizeof(bool));
 	while (1)
 	{
 		GetSingleValue_in_value(index_value_p, &isTrue);
@@ -124,7 +125,7 @@ bool DPLL()
 		SetValue(index_value_p, isTrue, stack_RemovedValue ,stack_RemovedClauseHead, stack_RemovedValueHead);
 	}
 	if (!isTrue)
-		isTrue = malloc(sizeof(bool));
+		isTrue = (bool*)malloc(sizeof(bool));
 
 	if (CheckEmptyCNF())//Ã»ÓÐ¾ä×Ó
 	{

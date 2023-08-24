@@ -1,2 +1,24 @@
-﻿  MAIN.c
-  DPLL.vcxproj -> E:\U\DPLL\x64\Debug\DPLL.exe
+﻿  CNF_Reader.cpp
+  MAIN.cpp
+  Solver.cpp
+  Stack.cpp
+  正在生成代码...
+MAIN.obj : error LNK2005: "int count_value" (?count_value@@3HA) 已经在 CNF_Reader.obj 中定义
+MAIN.obj : error LNK2005: "int count_clause" (?count_clause@@3HA) 已经在 CNF_Reader.obj 中定义
+MAIN.obj : error LNK2005: "struct ValueHeadNode * valuesHead" (?valuesHead@@3PAUValueHeadNode@@A) 已经在 CNF_Reader.obj 中定义
+MAIN.obj : error LNK2005: "struct ValueHeadNode valuesHeadHead" (?valuesHeadHead@@3UValueHeadNode@@A) 已经在 CNF_Reader.obj 中定义
+MAIN.obj : error LNK2005: "struct ClauseHeadNode * clausesHead" (?clausesHead@@3PAUClauseHeadNode@@A) 已经在 CNF_Reader.obj 中定义
+MAIN.obj : error LNK2005: "struct ClauseHeadNode clausesHeadHead" (?clausesHeadHead@@3UClauseHeadNode@@A) 已经在 CNF_Reader.obj 中定义
+Solver.obj : error LNK2005: "int count_value" (?count_value@@3HA) 已经在 CNF_Reader.obj 中定义
+Solver.obj : error LNK2005: "int count_clause" (?count_clause@@3HA) 已经在 CNF_Reader.obj 中定义
+Solver.obj : error LNK2005: "struct ValueHeadNode * valuesHead" (?valuesHead@@3PAUValueHeadNode@@A) 已经在 CNF_Reader.obj 中定义
+Solver.obj : error LNK2005: "struct ValueHeadNode valuesHeadHead" (?valuesHeadHead@@3UValueHeadNode@@A) 已经在 CNF_Reader.obj 中定义
+Solver.obj : error LNK2005: "struct ClauseHeadNode * clausesHead" (?clausesHead@@3PAUClauseHeadNode@@A) 已经在 CNF_Reader.obj 中定义
+Solver.obj : error LNK2005: "struct ClauseHeadNode clausesHeadHead" (?clausesHeadHead@@3UClauseHeadNode@@A) 已经在 CNF_Reader.obj 中定义
+Stack.obj : error LNK2005: "int count_value" (?count_value@@3HA) 已经在 CNF_Reader.obj 中定义
+Stack.obj : error LNK2005: "int count_clause" (?count_clause@@3HA) 已经在 CNF_Reader.obj 中定义
+Stack.obj : error LNK2005: "struct ValueHeadNode * valuesHead" (?valuesHead@@3PAUValueHeadNode@@A) 已经在 CNF_Reader.obj 中定义
+Stack.obj : error LNK2005: "struct ValueHeadNode valuesHeadHead" (?valuesHeadHead@@3UValueHeadNode@@A) 已经在 CNF_Reader.obj 中定义
+Stack.obj : error LNK2005: "struct ClauseHeadNode * clausesHead" (?clausesHead@@3PAUClauseHeadNode@@A) 已经在 CNF_Reader.obj 中定义
+Stack.obj : error LNK2005: "struct ClauseHeadNode clausesHeadHead" (?clausesHeadHead@@3UClauseHeadNode@@A) 已经在 CNF_Reader.obj 中定义
+E:\U\DPLL\x64\Debug\DPLL.exe : fatal error LNK1169: 找到一个或多个多重定义的符号
