@@ -1,5 +1,6 @@
 #include"Definition.h"
 #include"Solver.h"
+#include"Stack.h"
 //extern int count_value, count_clause;
 bool XOR(bool A, bool B)
 {
@@ -98,19 +99,57 @@ void SetValue
 	while (this_value)
 	{
 		bool is_true_here = XOR(this_value->isNegative, *f_isTrue);
-		if (is_true_here)
+		struct ClauseHeadNode* removedClauseHead = &clausesHead[this_value->index_clause];
+		struct ValueNode* removedValue = clausesHead[this_value->index_clause].nextValue_in_clause;
+		if (is_true_here)//删除句子头及其所有节点
 		{
-			//删除句子头及其所有节点
+			//删除所有节点
+			while (removedValue)
+			{
+				removedClauseHead->nextValue_in_clause = removedClauseHead->nextValue_in_clause->nextValue_in_clause;
+				if(removedClauseHead->nextValue_in_clause)
+					removedClauseHead->nextValue_in_clause->preValue_in_clause = NULL;
+				f_stack_RemovedValue = MyPush(f_stack_RemovedValue, *removedValue);
+				removedValue = removedValue->nextValue_in_clause;
+			}
+			//删除句子头
+			if (removedClauseHead->preClauseHead)
+			{
+				removedClauseHead->preClauseHead->nextClauseHead = removedClauseHead->nextClauseHead;
+			}
+			if (removedClauseHead->nextClauseHead)
+			{
+				removedClauseHead->nextClauseHead->preClauseHead = removedClauseHead->preClauseHead;
+			}
+			f_stack_RemovedClauseHead = MyPush_2(f_stack_RemovedClauseHead, *removedClauseHead);
 		}
-		else
+		else//删除句子中这个节点（横向指针）
 		{
-			//删除句子中这个节点（横向指针）
+			if (this_value->preValue_in_clause)
+			{
+				this_value->preValue_in_clause->nextValue_in_clause = this_value->nextValue_in_clause;
+			}
+			if (this_value->nextValue_in_clause)
+			{
+				this_value->nextValue_in_clause->preValue_in_clause = this_value->preValue_in_clause;
+			}
+			f_stack_RemovedValue = MyPush(f_stack_RemovedValue, *this_value);
 		}
 		this_value = this_value->nextValue_in_value;
 	}
 	//竖向
-	struct ValueHeadNode* this_valueHead = &valuesHead[*f_index_value];
 	//删除这个变量头
+	struct ValueHeadNode* removedValueHead = &valuesHead[*f_index_value];
+	if (removedValueHead->preValueHead)
+	{
+		removedValueHead->preValueHead->nextValueHead = removedValueHead->nextValueHead;
+	}
+	if (removedValueHead->nextValueHead)
+	{
+		removedValueHead->nextValueHead->preValueHead = removedValueHead->preValueHead;
+	}
+	f_stack_RemovedValueHead = MyPush_3(f_stack_RemovedValueHead, *removedValueHead);
+	
 }
 bool CheckEmptyCNF()
 {
@@ -145,9 +184,9 @@ void RevertChange
 }
 bool DPLL()
 {
-	struct Stack_Value* stack_RemovedValue = (struct Stack_Value*)malloc(sizeof(struct Stack_Value));
-	struct Stack_ClauseHead* stack_RemovedClauseHead = (struct Stack_ClauseHead*)malloc(sizeof(struct Stack_ClauseHead));
-	struct Stack_ValueHead* stack_RemovedValueHead = (struct Stack_ValueHead*)malloc(sizeof(struct Stack_ValueHead));
+	struct Stack_Value* stack_RemovedValue = NULL/*(struct Stack_Value*)malloc(sizeof(struct Stack_Value))*/;
+	struct Stack_ClauseHead* stack_RemovedClauseHead = NULL/*(struct Stack_ClauseHead*)malloc(sizeof(struct Stack_ClauseHead))*/;
+	struct Stack_ValueHead* stack_RemovedValueHead = NULL/*(struct Stack_ValueHead*)malloc(sizeof(struct Stack_ValueHead))*/;
 	int* index_value_p = (int*)malloc(sizeof(int));
 	bool* isTrue = (bool*)malloc(sizeof(bool));
 	while (1)
