@@ -35,12 +35,13 @@ int Change_string_to_int(char t[10])
 	}
 	return ans;
 }
-struct ValueNode* CreateNewValueNode(bool isNegative, int index_value)
+struct ValueNode* CreateNewValueNode(bool isNegative, int index_value,int index_clause)
 {
 	struct ValueNode* new_value =(struct ValueNode*)malloc(sizeof(struct ValueNode*));
 	if (!new_value)return new_value;
 	new_value->isNegative = isNegative;
 	new_value->m_value = index_value;
+	new_value->index_clause = index_clause;
 	new_value->preValue_in_clause = NULL;
 	new_value->nextValue_in_clause = NULL;
 	new_value->preValue_in_value = NULL;
@@ -125,7 +126,7 @@ void ReadClause(int index_clause)
 		{
 			index_value = Change_string_to_int(t);
 		}
-		struct ValueNode* new_value = CreateNewValueNode( isNegative, index_value);
+		struct ValueNode* new_value = CreateNewValueNode( isNegative, index_value,index_clause);
 		AddNextValue_of_Clause(index_clause, new_value);
 		AddNextValue_of_Value(index_value, new_value);
 	}

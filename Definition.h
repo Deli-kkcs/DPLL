@@ -1,5 +1,5 @@
-#ifndef DEFINITION_H_
-#define DEFINITION_H_
+//#ifndef DEFINITION_H_
+//#define DEFINITION_H_
 #define _CRT_SECURE_NO_WARNINGS
 #include<stdio.h>
 #include<stdbool.h>
@@ -10,6 +10,7 @@ int count_value, count_clause;
 struct ValueNode
 {
 	int m_value;									//变量名
+	int index_clause;							//所属句子序号
 	bool isNegative;								//是否要取非
 	struct ValueNode* nextValue_in_clause;			//子句中下一个变量
 	struct ValueNode* preValue_in_clause;			//子句中上一个变量
@@ -57,4 +58,4 @@ struct Stack_ValueHead
 	struct ValueHeadNode m_value;
 	struct Stack_ValueHead* next;
 };
-#endif // !DEFINATION_H_
+//#endif // !DEFINATION_H_

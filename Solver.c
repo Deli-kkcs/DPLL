@@ -1,6 +1,12 @@
 #include"Definition.h"
 #include"Solver.h"
 //extern int count_value, count_clause;
+bool XOR(bool A, bool B)
+{
+	if (A && B || !A && !B)
+		return false;
+	return true;
+}
 void/* struct ClauseHeadNode* */ GetSingleValue_in_clause(int * f_index_value , bool** f_isTrue)
 {
 	struct ClauseHeadNode* this_clauseHead = clausesHeadHead.nextClauseHead;
@@ -19,6 +25,14 @@ void/* struct ClauseHeadNode* */ GetSingleValue_in_clause(int * f_index_value , 
 		if (this_clauseHead->nextValue_in_clause == this_clauseHead->latestValue_in_clause)		//找到只有一个变量的句子
 		{
 			*f_index_value = this_clauseHead->latestValue_in_clause->m_value;
+			if (this_clauseHead->latestValue_in_clause->isNegative)
+			{
+				**f_isTrue = false;
+			}
+			else
+			{
+				**f_isTrue = true;
+			}
 			return;
 		}
 		this_clauseHead = this_clauseHead->nextClauseHead;
@@ -44,6 +58,14 @@ void /* struct ValueHeadNode* */ GetSingleValue_in_value(int* f_index_value, boo
 		if (this_ValueHead->nextValue_in_value == this_ValueHead->latestValue_in_value)		//找到只出现过一次的变量
 		{
 			*f_index_value = this_ValueHead->latestValue_in_value->m_value;
+			if (this_ValueHead->latestValue_in_value->isNegative)
+			{
+				**f_isTrue = false;
+			}
+			else
+			{
+				**f_isTrue = true;
+			}
 			return;
 		}
 		this_ValueHead = this_ValueHead->nextValueHead;
@@ -56,6 +78,7 @@ void ChooseValue(int* f_index_value)
 	*f_index_value = valuesHeadHead.nextValueHead->m_value;
 	//TODO_2
 }
+
 void SetValue
 (
 	int* f_index_value,
@@ -69,7 +92,25 @@ void SetValue
 	{
 		return;
 	}
-	//TODO_1
+	struct ValueNode* this_value = valuesHead[*f_index_value].nextValue_in_value;
+	valuesHead[*f_index_value].m_truth = (f_isTrue ? 1 : -1);
+	//横向
+	while (this_value)
+	{
+		bool is_true_here = XOR(this_value->isNegative, *f_isTrue);
+		if (is_true_here)
+		{
+			//删除句子头及其所有节点
+		}
+		else
+		{
+			//删除句子中这个节点（横向指针）
+		}
+		this_value = this_value->nextValue_in_value;
+	}
+	//竖向
+	struct ValueHeadNode* this_valueHead = &valuesHead[*f_index_value];
+	//删除这个变量头
 }
 bool CheckEmptyCNF()
 {
