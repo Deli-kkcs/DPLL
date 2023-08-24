@@ -19,7 +19,7 @@ struct ValueNode
 struct ValueHeadNode
 {
 	int m_value;									//变量名
-	bool isTrue;									//取值是否为真
+	int m_truth;									//取值是否为真
 	struct ValueNode* latestValue_in_value;			//该变量最后一次出现的位置
 
 	//struct ValueNode* valueSpeciallyInValueHead;	//变量头结点特有的变量节点类型
@@ -42,6 +42,7 @@ struct ClauseHeadNode
 	struct ClauseHeadNode* preClauseHead;
 }/*子句头结点数组*/clausesHead[10000] ,/*子句头结点的头结点*/ clausesHeadHead;
 
+//三种栈定义及Stack.c中函数声明
 struct Stack_Value 
 {
 	struct ValueNode m_value;
@@ -56,15 +57,16 @@ struct Stack_ClauseHead
 };
 struct Stack_ClauseHead* MyPush_2(struct Stack_ClauseHead* stack, struct ClauseHeadNode value);
 struct Stack_ClauseHead* MyPop_2(struct Stack_ClauseHead* stack);
-struct Stack_ValueHasBeenSet
+struct Stack_ValueHead
 {
-	int m_value;// 0无 1真 -1假
-	struct Stack_ValueHasBeenSet* next;
+	struct ValueHeadNode m_value;
+	struct Stack_ValueHead* next;
 };
-struct Stack_ValueHasBeenSet* MyPush_3(struct Stack_ValueHasBeenSet* stack, int value);
-struct Stack_ValueHasBeenSet* MyPop_3(struct Stack_ValueHasBeenSet* stack);
-//struct Stack_ValueHasBeenSet* MyPush(struct Stack_ValueHasBeenSet* stack, int truth);
-/*CNF_Reader中函数声明*/
+struct Stack_ValueHead* MyPush_3(struct Stack_ValueHead* stack, struct ValueHeadNode value);
+struct Stack_ValueHead* MyPop_3(struct Stack_ValueHead* stack);
+
+
+/*CNF_Reader.c中函数声明*/
 void MyGetString(char t[10]);
 char MyGetChar();
 char GetLine_Exclude_C();
@@ -77,17 +79,16 @@ void CreateClauseHeadLink();
 void ReadClause(int index_clause);
 void ReadCNF(char t);
 
-/*Solver中函数声明*/
+/*Solver.c中函数声明*/
 void/* struct ClauseHeadNode* */ GetSingleValue_in_clause(int* f_index_value, bool** f_isTrue);
-void GetSingleValue_in_value(int* f_index_value, bool* f_isTrue);
+void GetSingleValue_in_value(int* f_index_value, bool** f_isTrue);
 void ChooseValue(int* f_index_value);
 void SetValue
 (
-	int* f_index_value,
-	bool* f_isTrue,
+	int* f_index_value,bool* f_isTrue,
 	struct Stack_Value* f_stack_RemovedValue,
 	struct Stack_ClauseHead* f_stack_RemovedClauseHead,
-	struct Stack_ValueHasBeenSet* f_stack_SetValue
+	struct Stack_ValueHead* f_stack_RemovedValueHead
 );
 bool CheckEmptyCNF();
 bool CheckEmptyClause();
@@ -95,6 +96,6 @@ void RevertChange
 (
 	struct Stack_Value* f_stack_RemovedValue,
 	struct Stack_ClauseHead* f_stack_RemovedClauseHead,
-	struct Stack_ValueHasBeenSet* f_stack_SetValue
+	struct Stack_ValueHead* f_stack_RemovedValueHead
 );
 bool DPLL();

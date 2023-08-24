@@ -40,9 +40,9 @@ struct Stack_ClauseHead* MyPop_2(struct Stack_ClauseHead* stack)
 	return stack;
 }
 
-struct Stack_ValueHasBeenSet* MyPush_3(struct Stack_ValueHasBeenSet* stack, int value)
+struct Stack_ValueHead* MyPush_3(struct Stack_ValueHead* stack, struct ValueHeadNode value)
 {
-	struct Stack_ValueHasBeenSet* new_elem = (struct Stack_ValueHasBeenSet*)malloc(sizeof(struct Stack_ValueHasBeenSet));
+	struct Stack_ValueHead* new_elem = (struct Stack_ValueHead*)malloc(sizeof(struct Stack_ValueHead));
 	if (!new_elem)
 		return new_elem;
 	new_elem->m_value = value;
@@ -50,12 +50,11 @@ struct Stack_ValueHasBeenSet* MyPush_3(struct Stack_ValueHasBeenSet* stack, int 
 	stack = new_elem;
 	return stack;
 }
-
-struct Stack_ValueHasBeenSet* MyPop_3(struct Stack_ValueHasBeenSet* stack)
+struct Stack_ValueHead* MyPop_3(struct Stack_ValueHead* stack)
 {
 	if (!stack)
 		return stack;
-	struct Stack_ValueHasBeenSet* p = stack;
+	struct Stack_ValueHead* p = stack;
 	stack = stack->next;
 	free(p);
 	return stack;

@@ -1,14 +1,19 @@
 #include"Definition.h"
 void/* struct ClauseHeadNode* */ GetSingleValue_in_clause(int * f_index_value , bool** f_isTrue)
 {
-	if (!clausesHeadHead.nextClauseHead)
+	struct ClauseHeadNode* this_clauseHead = clausesHeadHead.nextClauseHead;
+	if (!this_clauseHead)
 	{
 		*f_isTrue = NULL;
 		return;
 	}
-	struct ClauseHeadNode* this_clauseHead = clausesHeadHead.nextClauseHead;
 	while (this_clauseHead)
 	{
+		if (!this_clauseHead->nextValue_in_clause)
+		{
+			this_clauseHead = this_clauseHead->nextClauseHead;
+			continue;
+		}
 		if (this_clauseHead->nextValue_in_clause == this_clauseHead->latestValue_in_clause)		//找到只有一个变量的句子
 		{
 			*f_index_value = this_clauseHead->latestValue_in_clause->m_value;
@@ -16,19 +21,24 @@ void/* struct ClauseHeadNode* */ GetSingleValue_in_clause(int * f_index_value , 
 		}
 		this_clauseHead = this_clauseHead->nextClauseHead;
 	}
-	f_isTrue = NULL;
+	*f_isTrue = NULL;
 	return;
 }
-void /* struct ValueHeadNode* */ GetSingleValue_in_value(int* f_index_value, bool* f_isTrue)
+void /* struct ValueHeadNode* */ GetSingleValue_in_value(int* f_index_value, bool** f_isTrue)
 {
-	if (!valuesHeadHead.nextValueHead)
+	struct ValueHeadNode* this_ValueHead = valuesHeadHead.nextValueHead;
+	if (!this_ValueHead)
 	{
-		f_isTrue = NULL;
+		*f_isTrue = NULL;
 		return;
 	}
-	struct ValueHeadNode* this_ValueHead = valuesHeadHead.nextValueHead;
 	while (this_ValueHead)
 	{
+		if (!this_ValueHead->nextValue_in_value)
+		{
+			this_ValueHead = this_ValueHead->nextValueHead;
+			continue;
+		}
 		if (this_ValueHead->nextValue_in_value == this_ValueHead->latestValue_in_value)		//找到只出现过一次的变量
 		{
 			*f_index_value = this_ValueHead->latestValue_in_value->m_value;
@@ -36,7 +46,7 @@ void /* struct ValueHeadNode* */ GetSingleValue_in_value(int* f_index_value, boo
 		}
 		this_ValueHead = this_ValueHead->nextValueHead;
 	}
-	f_isTrue = NULL;
+	*f_isTrue = NULL;
 	return;
 }
 void ChooseValue(int* f_index_value)
@@ -50,7 +60,7 @@ void SetValue
 	bool* f_isTrue,
 	struct Stack_Value* f_stack_RemovedValue,
 	struct Stack_ClauseHead* f_stack_RemovedClauseHead,
-	struct Stack_ValueHasBeenSet* f_stack_SetValue
+	struct Stack_ValueHead* f_stack_RemovedValueHead
 )
 {
 	if (!f_index_value)
@@ -84,8 +94,8 @@ bool CheckEmptyClause()
 void RevertChange
 (
 	struct Stack_Value* f_stack_RemovedValue, 
-	struct Stack_ClauseHead* f_stack_RemovedClauseHead, 
-	struct Stack_ValueHasBeenSet* f_stack_SetValue
+	struct Stack_ClauseHead* f_stack_RemovedClauseHead,
+	struct Stack_ValueHead* f_stack_RemovedValueHead
 )
 {
 	//TODO_1
@@ -94,7 +104,7 @@ bool DPLL()
 {
 	struct Stack_Value* stack_RemovedValue = malloc(sizeof(struct Stack_Value));
 	struct Stack_ClauseHead* stack_RemovedClauseHead = malloc(sizeof(struct Stack_ClauseHead));
-	struct Stack_ValueHasBeenSet* stack_SetValue = malloc(sizeof(struct Stack_ValueHasBeenSet));
+	struct Stack_ValueHead* stack_RemovedValueHead = malloc(sizeof(struct Stack_ValueHead));
 	int* index_value_p = malloc(sizeof(int));
 	bool* isTrue = (bool*)malloc(sizeof(bool));
 	while (1)
@@ -102,7 +112,7 @@ bool DPLL()
 		GetSingleValue_in_clause(index_value_p, &isTrue);
 		if (!isTrue)
 			break;
-		SetValue(index_value_p, isTrue, stack_RemovedValue , stack_RemovedClauseHead, stack_SetValue);
+		SetValue(index_value_p, isTrue, stack_RemovedValue , stack_RemovedClauseHead, stack_RemovedValueHead);
 	}
 	if(!isTrue)
 		isTrue = malloc(sizeof(bool));
@@ -111,37 +121,39 @@ bool DPLL()
 		GetSingleValue_in_value(index_value_p, &isTrue);
 		if (!isTrue)
 			break;
-		SetValue(index_value_p, isTrue, stack_RemovedValue ,stack_RemovedClauseHead, stack_SetValue);
+		SetValue(index_value_p, isTrue, stack_RemovedValue ,stack_RemovedClauseHead, stack_RemovedValueHead);
 	}
 	if (!isTrue)
 		isTrue = malloc(sizeof(bool));
 
 	if (CheckEmptyCNF())//没有句子
 	{
-		RevertChange(stack_RemovedValue, stack_RemovedClauseHead, stack_SetValue);
+		RevertChange(stack_RemovedValue, stack_RemovedClauseHead, stack_RemovedValueHead);
 		return true;
 	}
 		
 	if (CheckEmptyClause())//有空句子
 	{
-		RevertChange(stack_RemovedValue, stack_RemovedClauseHead, stack_SetValue);
+		RevertChange(stack_RemovedValue, stack_RemovedClauseHead, stack_RemovedValueHead);
 		return false;
 	}
 		
 
 	bool state = false;
 	ChooseValue(index_value_p);
-	*isTrue = true;
-	SetValue(index_value_p, isTrue, stack_RemovedValue, stack_RemovedClauseHead, stack_SetValue);
+	if (isTrue)
+		*isTrue = true;
+	SetValue(index_value_p, isTrue, stack_RemovedValue, stack_RemovedClauseHead, stack_RemovedValueHead);
 	state = DPLL();
 	if (state)
 	{
-		RevertChange(stack_RemovedValue, stack_RemovedClauseHead, stack_SetValue);
+		RevertChange(stack_RemovedValue, stack_RemovedClauseHead, stack_RemovedValueHead);
 		return state;
 	}
-	*isTrue = false;
-	SetValue(index_value_p, isTrue, stack_RemovedValue, stack_RemovedClauseHead, stack_SetValue);
+	if (isTrue)
+		*isTrue = false;
+	SetValue(index_value_p, isTrue, stack_RemovedValue, stack_RemovedClauseHead, stack_RemovedValueHead);
 	state = DPLL();
-	RevertChange(stack_RemovedValue, stack_RemovedClauseHead,stack_SetValue);
+	RevertChange(stack_RemovedValue, stack_RemovedClauseHead, stack_RemovedValueHead);
 	return state;
 }

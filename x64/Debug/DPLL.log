@@ -1,4 +1,2 @@
-﻿  Solver.c
-E:\U\DPLL\Solver.c(111,49): warning C4047: “函数”:“bool *”与“bool **”的间接级别不同
-E:\U\DPLL\Solver.c(111,42): warning C4024: “GetSingleValue_in_value”: 形参和实参 2 的类型不同
+﻿  MAIN.c
   DPLL.vcxproj -> E:\U\DPLL\x64\Debug\DPLL.exe

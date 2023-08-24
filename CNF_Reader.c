@@ -146,7 +146,7 @@ void ReadCNF(char t)
 		return;*/
 	for (int i = 0; i < count_value; i++)
 	{
-		valuesHead[i].isTrue = false;
+		valuesHead[i].m_truth = 0;
 		valuesHead[i].nextValue_in_value = NULL;
 		//valuesHead[i].valueSpeciallyInValueHead = NULL;
 		//valuesHead[i].latestValue_in_value = valuesHead[i].valueSpeciallyInValueHead;
