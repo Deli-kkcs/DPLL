@@ -1,16 +1,11 @@
 #include"Definition.h"
-extern int count_value, count_clause;
-void F1()
-{
-	printf("F1");
-}
-void F1(int i)
-{
-	printf("F2");
-}
+#include"CNF_Reader.h"
+#include"Solver.h"
+#include"Stack.h"
+//extern int count_value, count_clause;
 int main()
 {
-	F1(1);
+
 	ReadCNF(GetLine_Exclude_C());
 	DPLL();
 	return 0;

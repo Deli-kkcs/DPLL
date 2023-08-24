@@ -1,5 +1,6 @@
 #include"Definition.h"
-extern int count_value, count_clause;
+#include"Solver.h"
+//extern int count_value, count_clause;
 void/* struct ClauseHeadNode* */ GetSingleValue_in_clause(int * f_index_value , bool** f_isTrue)
 {
 	struct ClauseHeadNode* this_clauseHead = clausesHeadHead.nextClauseHead;

@@ -18,18 +18,27 @@
     <ClInclude Include="Definition.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CNF_Reader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Solver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Stack.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CNF_Reader.cpp">
+    <ClCompile Include="CNF_Reader.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Solver.cpp">
+    <ClCompile Include="Solver.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="MAIN.cpp">
+    <ClCompile Include="MAIN.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Stack.cpp">
+    <ClCompile Include="Stack.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

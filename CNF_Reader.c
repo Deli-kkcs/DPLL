@@ -1,5 +1,6 @@
 #include"Definition.h"
-extern int count_value, count_clause;
+#include"CNF_Reader.h"
+//extern int count_value, count_clause;
 void MyGetString(char t[10])
 {
 	scanf("%s", t);

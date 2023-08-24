@@ -1,5 +1,6 @@
 #include"Definition.h"
-extern int count_value, count_clause;
+#include"Stack.h"
+//extern int count_value, count_clause;
 //stack为当前的链栈，a表示入栈元素
 struct Stack_Value* MyPush(struct Stack_Value* stack, struct ValueNode value)
 {
