@@ -215,7 +215,43 @@ void RevertChange
 	struct Stack_ValueHead** f_stack_RemovedValueHead
 )
 {
-	//TODO_1
+	struct ClauseHeadNode* back_clauseHead = MyPop_2(f_stack_RemovedClauseHead);
+	while (back_clauseHead)
+	{
+		if (back_clauseHead->preClauseHead)
+			back_clauseHead->preClauseHead->nextClauseHead = back_clauseHead;
+		if (back_clauseHead->nextClauseHead)
+			back_clauseHead->nextClauseHead->preClauseHead = back_clauseHead;
+		back_clauseHead = MyPop_2(f_stack_RemovedClauseHead);
+	}
+	struct ValueHeadNode* back_valueHead = MyPop_3(f_stack_RemovedValueHead);
+	while (back_valueHead)
+	{
+		if (back_valueHead->preValueHead)
+			back_valueHead->preValueHead->nextValueHead = back_valueHead;
+		if (back_valueHead->nextValueHead)
+			back_valueHead->nextValueHead->preValueHead = back_valueHead;
+		back_valueHead->m_truth = 0;
+		back_valueHead = MyPop_3(f_stack_RemovedValueHead);
+	}
+	struct ValueNode* back_value = MyPop(f_stack_RemovedValue);
+	while (back_value)
+	{
+		if (back_value->preValue_in_clause)
+			back_value->preValue_in_clause->nextValue_in_clause = back_value;
+		if (back_value->nextValue_in_clause)
+			back_value->nextValue_in_clause->preValue_in_clause = back_value;
+		if (clausesHead[back_value->index_clause].latestValue_in_clause == back_value->preValue_in_clause)
+			clausesHead[back_value->index_clause].latestValue_in_clause = back_value;
+
+		if (back_value->preValue_in_value)
+			back_value->preValue_in_value->nextValue_in_value = back_value;
+		if (back_value->nextValue_in_value)
+			back_value->nextValue_in_value->preValue_in_value = back_value;
+		if (valuesHead[back_value->m_value].latestValue_in_value == back_value->preValue_in_value)
+			valuesHead[back_value->m_value].latestValue_in_value = back_value;
+		back_value = MyPop(f_stack_RemovedValue);
+	}
 }
 void MyPrintResult()
 {
@@ -242,17 +278,17 @@ bool DPLL()
 		SetValue(index_value_p, isTrue, &stack_RemovedValue , &stack_RemovedClauseHead, &stack_RemovedValueHead);
 	}
 	{
-		if (CheckEmptyCNF())//没有句子
-		{
-			MyPrintResult();
-			RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
-			return true;
-		}
-		if (CheckEmptyClause())//有空句子
-		{
-			RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
-			return false;
-		}
+		//if (CheckEmptyCNF())//没有句子
+		//{
+		//	MyPrintResult();
+		//	RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
+		//	return true;
+		//}
+		//if (CheckEmptyClause())//有空句子
+		//{
+		//	RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
+		//	return false;
+		//}
 	}
 	if (!isTrue)
 	{

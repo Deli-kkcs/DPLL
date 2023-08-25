@@ -7,14 +7,14 @@ void MyPush(struct Stack_Value** f_stack, struct ValueNode* value)
 	new_elem->next = *f_stack;
 	*f_stack = new_elem;
 }
-struct Stack_Value* MyPop(struct Stack_Value* f_stack)
+struct ValueNode* MyPop(struct Stack_Value** f_stack)
 {
-	if (!f_stack)
-		return f_stack;
-	struct Stack_Value* p = f_stack;
-	f_stack = f_stack->next;
-	free(p);
-	return f_stack;
+	if (!*f_stack)
+		return NULL;
+	struct Stack_Value* p = *f_stack;
+	*f_stack = (*f_stack)->next;
+	//free(p);
+	return p->m_value;
 }
 void MyPush_2(struct Stack_ClauseHead** f_stack, struct ClauseHeadNode* value)
 {
@@ -23,14 +23,14 @@ void MyPush_2(struct Stack_ClauseHead** f_stack, struct ClauseHeadNode* value)
 	new_elem->next = *f_stack;
 	*f_stack = new_elem;
 }
-struct Stack_ClauseHead* MyPop_2(struct Stack_ClauseHead* f_stack)
+struct ClauseHeadNode* MyPop_2(struct Stack_ClauseHead** f_stack)
 {
-	if (!f_stack)
-		return f_stack;
-	struct Stack_ClauseHead* p = f_stack;
-	f_stack = f_stack->next;
-	free(p);
-	return f_stack;
+	if (!*f_stack)
+		return NULL;
+	struct Stack_ClauseHead* p = *f_stack;
+	*f_stack = (*f_stack)->next;
+	//free(p);
+	return p->m_value;
 }
 void MyPush_3(struct Stack_ValueHead** f_stack, struct ValueHeadNode* value)
 {
@@ -39,12 +39,12 @@ void MyPush_3(struct Stack_ValueHead** f_stack, struct ValueHeadNode* value)
 	new_elem->next = *f_stack;
 	*f_stack = new_elem;
 }
-struct Stack_ValueHead* MyPop_3(struct Stack_ValueHead* f_stack)
+struct ValueHeadNode* MyPop_3(struct Stack_ValueHead** f_stack)
 {
-	if (!f_stack)
-		return f_stack;
-	struct Stack_ValueHead* p = f_stack;
-	f_stack = f_stack->next;
-	free(p);
-	return f_stack;
+	if (!*f_stack)
+		return NULL;
+	struct Stack_ValueHead* p = *f_stack;
+	*f_stack = (*f_stack)->next;
+	//free(p);
+	return p->m_value;
 }
