@@ -37,7 +37,7 @@ int Change_string_to_int(char t[10])
 }
 struct ValueNode* CreateNewValueNode(bool isNegative, int index_value,int index_clause)
 {
-	struct ValueNode* new_value =(struct ValueNode*)malloc(sizeof(struct ValueNode*));
+	struct ValueNode* new_value =(struct ValueNode*)malloc(sizeof(struct ValueNode));
 	if (!new_value)return new_value;
 	new_value->isNegative = isNegative;
 	new_value->m_value = index_value;
