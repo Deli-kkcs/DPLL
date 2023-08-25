@@ -5,7 +5,7 @@
 #include<stdbool.h>
 #include<stdlib.h>
 #include<string.h>
-int count_value, count_clause;
+int count_value, count_clause , count_solution;
 //变量结点
 struct ValueNode
 {

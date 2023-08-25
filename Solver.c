@@ -217,6 +217,16 @@ void RevertChange
 {
 	//TODO_1
 }
+void MyPrintResult()
+{
+	count_solution++;
+	printf("第%d个解: ",count_solution);
+	for (int i = 1; i <= count_value; i++)
+	{
+		printf("%d ", valuesHead[i].m_truth);
+	}
+	printf("\n");
+}
 bool DPLL()
 {
 	struct Stack_Value* stack_RemovedValue = NULL/*(struct Stack_Value*)malloc(sizeof(struct Stack_Value))*/;
@@ -234,6 +244,7 @@ bool DPLL()
 	{
 		if (CheckEmptyCNF())//没有句子
 		{
+			MyPrintResult();
 			RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
 			return true;
 		}
@@ -257,6 +268,7 @@ bool DPLL()
 	{
 		if (CheckEmptyCNF())//没有句子
 		{
+			MyPrintResult();
 			RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
 			return true;
 		}

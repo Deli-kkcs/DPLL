@@ -23,7 +23,6 @@ void MyPush_2(struct Stack_ClauseHead** f_stack, struct ClauseHeadNode* value)
 	new_elem->next = *f_stack;
 	*f_stack = new_elem;
 }
-
 struct Stack_ClauseHead* MyPop_2(struct Stack_ClauseHead* f_stack)
 {
 	if (!f_stack)
@@ -33,7 +32,6 @@ struct Stack_ClauseHead* MyPop_2(struct Stack_ClauseHead* f_stack)
 	free(p);
 	return f_stack;
 }
-
 void MyPush_3(struct Stack_ValueHead** f_stack, struct ValueHeadNode* value)
 {
 	struct Stack_ValueHead* new_elem = (struct Stack_ValueHead*)malloc(sizeof(struct Stack_ValueHead));

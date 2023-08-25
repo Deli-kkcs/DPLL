@@ -6,16 +6,16 @@
 int main()
 {
 	ReadCNF(GetLine_Exclude_C());
+	count_solution = 0;
 	DPLL();
+	if (count_solution == 0)
+		printf("¾øÉ±£¬Îâ½ã!\n");
 	return 0;
 }
 /*
 c qw q
 c wawa
-p cnf 6 2
-3 -4 5 0
--3 -4 5 0
+p cnf 7 0
+0
 
-3 0
--3 2 -1 0
 */
