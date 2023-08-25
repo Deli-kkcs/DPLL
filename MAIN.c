@@ -5,7 +5,6 @@
 //extern int count_value, count_clause;
 int main()
 {
-
 	ReadCNF(GetLine_Exclude_C());
 	DPLL();
 	return 0;

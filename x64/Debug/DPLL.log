@@ -1,4 +1,6 @@
-﻿  MAIN.c
+﻿  CNF_Reader.c
+  MAIN.c
   Solver.c
+  Stack.c
   正在生成代码...
   DPLL.vcxproj -> E:\U\DPLL\x64\Debug\DPLL.exe
