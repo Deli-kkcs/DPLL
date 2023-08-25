@@ -13,9 +13,9 @@ int main()
 /*
 c qw q
 c wawa
-p cnf 3 1
-1 1 2 2 3 0
-
+p cnf 4 2
+1 1 2 3 0
+2 2 4 4 0
 
 3 0
 -3 2 -1 0

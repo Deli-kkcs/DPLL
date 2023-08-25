@@ -96,14 +96,14 @@ void SetValue
 	struct ValueNode* this_value = valuesHead[*f_index_value].nextValue_in_value;
 	valuesHead[*f_index_value].m_truth = (f_isTrue ? 1 : -1);
 	//横向
-	while (this_value)
+	while (this_value)//遍历这个参数出现的每一个位置
 	{
 		bool is_true_here = XOR(this_value->isNegative, *f_isTrue);
 		struct ClauseHeadNode* removedClauseHead = &clausesHead[this_value->index_clause];
 		struct ValueNode* removedValue = clausesHead[this_value->index_clause].nextValue_in_clause;
-		if (is_true_here)//删除句子头及其所有节点
+		if (is_true_here)//这个点值为真，删除句子头及其所有节点
 		{
-			//删除所有节点
+			//删除句子中所有节点
 			while (removedValue)
 			{
 				removedClauseHead->nextValue_in_clause = removedClauseHead->nextValue_in_clause->nextValue_in_clause;
@@ -123,7 +123,7 @@ void SetValue
 			}
 			f_stack_RemovedClauseHead = MyPush_2(f_stack_RemovedClauseHead, *removedClauseHead);
 		}
-		else//删除句子中这个节点（横向指针）
+		else//这个点值为假，删除句子中这个节点（横向指针）
 		{
 			if (this_value->preValue_in_clause)
 			{
@@ -153,7 +153,7 @@ void SetValue
 }
 bool CheckEmptyCNF()
 {
-	if (!clausesHeadHead.nextClauseHead)
+	if (clausesHeadHead.nextClauseHead)
 	{
 		return false;
 	}
@@ -195,6 +195,17 @@ bool DPLL()
 		if (!isTrue)
 			break;
 		SetValue(index_value_p, isTrue, stack_RemovedValue , stack_RemovedClauseHead, stack_RemovedValueHead);
+		//if (CheckEmptyCNF())//没有句子
+		//{
+		//	RevertChange(stack_RemovedValue, stack_RemovedClauseHead, stack_RemovedValueHead);
+		//	return true;
+		//}
+
+		//if (CheckEmptyClause())//有空句子
+		//{
+		//	RevertChange(stack_RemovedValue, stack_RemovedClauseHead, stack_RemovedValueHead);
+		//	return false;
+		//}
 	}
 	if(!isTrue)
 		isTrue = (bool*)malloc(sizeof(bool));
@@ -204,23 +215,32 @@ bool DPLL()
 		if (!isTrue)
 			break;
 		SetValue(index_value_p, isTrue, stack_RemovedValue ,stack_RemovedClauseHead, stack_RemovedValueHead);
-	}
-	if (!isTrue)
-		isTrue = (bool*)malloc(sizeof(bool));
+		//if (CheckEmptyCNF())//没有句子
+		//{
+		//	RevertChange(stack_RemovedValue, stack_RemovedClauseHead, stack_RemovedValueHead);
+		//	return true;
+		//}
 
+		//if (CheckEmptyClause())//有空句子
+		//{
+		//	RevertChange(stack_RemovedValue, stack_RemovedClauseHead, stack_RemovedValueHead);
+		//	return false;
+		//}
+	}
 	if (CheckEmptyCNF())//没有句子
 	{
 		RevertChange(stack_RemovedValue, stack_RemovedClauseHead, stack_RemovedValueHead);
 		return true;
 	}
-		
+
 	if (CheckEmptyClause())//有空句子
 	{
 		RevertChange(stack_RemovedValue, stack_RemovedClauseHead, stack_RemovedValueHead);
 		return false;
 	}
-		
 
+	if (!isTrue)
+		isTrue = (bool*)malloc(sizeof(bool));
 	bool state = false;
 	ChooseValue(index_value_p);
 	if (isTrue)
