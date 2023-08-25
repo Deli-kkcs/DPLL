@@ -45,17 +45,17 @@ struct ClauseHeadNode
 //»˝÷÷’ª
 struct Stack_Value 
 {
-	struct ValueNode m_value;
+	struct ValueNode* m_value;
 	struct Stack_Value* next;
 };
 struct Stack_ClauseHead
 {
-	struct ClauseHeadNode m_value;
+	struct ClauseHeadNode* m_value;
 	struct Stack_ClauseHead* next;
 };
 struct Stack_ValueHead
 {
-	struct ValueHeadNode m_value;
+	struct ValueHeadNode* m_value;
 	struct Stack_ValueHead* next;
 };
 //#endif // !DEFINATION_H_

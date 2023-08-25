@@ -1,63 +1,52 @@
 #include"Definition.h"
 #include"Stack.h"
-//extern int count_value, count_clause;
-//stack为当前的链栈，a表示入栈元素
-struct Stack_Value* MyPush(struct Stack_Value* stack, struct ValueNode value)
+void MyPush(struct Stack_Value** f_stack, struct ValueNode* value)
 {
 	struct Stack_Value* new_elem = (struct Stack_Value*)malloc(sizeof(struct Stack_Value));
-	if (!new_elem)
-		return new_elem;
 	new_elem->m_value = value;
-	new_elem->next = stack;
-	stack = new_elem;
-	return stack;
+	new_elem->next = *f_stack;
+	*f_stack = new_elem;
 }
-struct Stack_Value* MyPop(struct Stack_Value* stack)
+struct Stack_Value* MyPop(struct Stack_Value* f_stack)
 {
-	if (!stack)
-		return stack;
-	struct Stack_Value* p = stack;
-	stack = stack->next;
+	if (!f_stack)
+		return f_stack;
+	struct Stack_Value* p = f_stack;
+	f_stack = f_stack->next;
 	free(p);
-	return stack;
+	return f_stack;
 }
-struct Stack_ClauseHead* MyPush_2(struct Stack_ClauseHead* stack, struct ClauseHeadNode value)
+void MyPush_2(struct Stack_ClauseHead** f_stack, struct ClauseHeadNode* value)
 {
 	struct Stack_ClauseHead* new_elem = (struct Stack_ClauseHead*)malloc(sizeof(struct Stack_ClauseHead));
-	if (!new_elem)
-		return new_elem;
 	new_elem->m_value = value;
-	new_elem->next = stack;
-	stack = new_elem;
-	return stack;
+	new_elem->next = *f_stack;
+	*f_stack = new_elem;
 }
 
-struct Stack_ClauseHead* MyPop_2(struct Stack_ClauseHead* stack)
+struct Stack_ClauseHead* MyPop_2(struct Stack_ClauseHead* f_stack)
 {
-	if (!stack)
-		return stack;
-	struct Stack_ClauseHead* p = stack;
-	stack = stack->next;
+	if (!f_stack)
+		return f_stack;
+	struct Stack_ClauseHead* p = f_stack;
+	f_stack = f_stack->next;
 	free(p);
-	return stack;
+	return f_stack;
 }
 
-struct Stack_ValueHead* MyPush_3(struct Stack_ValueHead* stack, struct ValueHeadNode value)
+void MyPush_3(struct Stack_ValueHead** f_stack, struct ValueHeadNode* value)
 {
 	struct Stack_ValueHead* new_elem = (struct Stack_ValueHead*)malloc(sizeof(struct Stack_ValueHead));
-	if (!new_elem)
-		return new_elem;
 	new_elem->m_value = value;
-	new_elem->next = stack;
-	stack = new_elem;
-	return stack;
+	new_elem->next = *f_stack;
+	*f_stack = new_elem;
 }
-struct Stack_ValueHead* MyPop_3(struct Stack_ValueHead* stack)
+struct Stack_ValueHead* MyPop_3(struct Stack_ValueHead* f_stack)
 {
-	if (!stack)
-		return stack;
-	struct Stack_ValueHead* p = stack;
-	stack = stack->next;
+	if (!f_stack)
+		return f_stack;
+	struct Stack_ValueHead* p = f_stack;
+	f_stack = f_stack->next;
 	free(p);
-	return stack;
+	return f_stack;
 }
