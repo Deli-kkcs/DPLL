@@ -1,16 +1,43 @@
 //#ifndef DEFINITION_H_
 //#define DEFINITION_H_
 #define _CRT_SECURE_NO_WARNINGS
+#define max_count_value 10001
+#define max_count_clause 150001
 #include<stdio.h>
 #include<stdbool.h>
 #include<stdlib.h>
 #include<string.h>
 int count_value, count_clause , count_solution;
+FILE* fp;
+struct CountAppear
+{
+	int m_count;
+	int m_index_value;
+	struct CountAppear* next;
+	struct CountAppear* pre;
+}count_valueAppear[max_count_value],*head_count_valueAppear;
+void AddCountAppear(int f_index_value)
+{
+	count_valueAppear[f_index_value].m_count++;
+	while (count_valueAppear[f_index_value].next)
+	{
+		if (count_valueAppear[f_index_value].m_count > count_valueAppear[f_index_value].next->m_count)
+		{
+
+		}
+	}
+	//TODO_2
+}
+void MinusCountAppear(int f_index_value)
+{
+	count_valueAppear[f_index_value].m_count--;
+	//TODO_2
+}
 //变量结点
 struct ValueNode
 {
 	int m_value;									//变量名
-	int index_clause;							//所属句子序号
+	int index_clause;								//所属句子序号
 	bool isNegative;								//是否要取非
 	struct ValueNode* nextValue_in_clause;			//子句中下一个变量
 	struct ValueNode* preValue_in_clause;			//子句中上一个变量
@@ -29,7 +56,7 @@ struct ValueHeadNode
 
 	struct ValueHeadNode* nextValueHead;			//下一个变量头结点
 	struct ValueHeadNode* preValueHead;				//上一个变量头结点
-}/*变量头结点数组*/valuesHead[10000],/*变量头结点的头结点*/ valuesHeadHead;
+}/*变量头结点数组*/valuesHead[max_count_value],/*变量头结点的头结点*/ valuesHeadHead;
 //子句头结点
 struct ClauseHeadNode
 {
@@ -41,7 +68,7 @@ struct ClauseHeadNode
 
 	struct ClauseHeadNode* nextClauseHead;
 	struct ClauseHeadNode* preClauseHead;
-}/*子句头结点数组*/clausesHead[150000] ,/*子句头结点的头结点*/ clausesHeadHead;
+}/*子句头结点数组*/clausesHead[max_count_clause] ,/*子句头结点的头结点*/ clausesHeadHead;
 //三种栈
 struct Stack_Value 
 {

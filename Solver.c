@@ -81,8 +81,19 @@ void GetSingleValue_in_value(int* f_index_value, int** f_isTrue)
 }
 void ChooseValue(int* f_index_value)
 {
+	/*int max_appear = -1;
+    int index_max_appear = -1;*/
 	*f_index_value = valuesHeadHead.nextValueHead->m_value;
-	//TODO_2
+	/*struct ValueHeadNode* this_valueHead = valuesHeadHead.nextValueHead;
+	while (this_valueHead)
+	{
+		if (count_valueAppear[this_valueHead->m_value] > max_appear)
+		{
+			max_appear = count_valueAppear[this_valueHead->m_value];
+			*f_index_value = this_valueHead->m_value;
+		}
+		this_valueHead = this_valueHead->nextValueHead;
+	}*/
 }
 void RemoveValue_in_clause(struct Stack_Value** f_stack_RemovedValue, struct ValueNode* removed_value)
 {
@@ -122,6 +133,7 @@ void RemoveValue_in_value(struct Stack_ValueHead** f_stack_RemovedValueHead, str
 			may_removedValueHead->nextValueHead->preValueHead = may_removedValueHead->preValueHead;
 		MyPush_3(f_stack_RemovedValueHead, may_removedValueHead);
 	}
+	MinusCountAppear(removed_value->m_value);
 }
 void RemoveClauseHead(struct Stack_ClauseHead** f_stack_RemovedClauseHead, struct ClauseHeadNode* removed_clauseHead)
 {
@@ -143,6 +155,8 @@ void RemoveValueHead(struct Stack_ValueHead** f_stack_RemovedValueHead, struct V
 	}
 	MyPush_3(f_stack_RemovedValueHead,removed_valueHead);
 }
+
+
 void SetValue
 (
 	int* f_index_value,
@@ -163,9 +177,13 @@ void SetValue
 		RemoveValueHead(f_stack_RemovedValueHead, &valuesHead[*f_index_value]);
 		return;
 	}
-	printf("****  %d 设为  ", *f_index_value);
-	if (*f_isTrue == 1)printf("TRUE\n");
-	if (*f_isTrue == -1)printf("FALSE\n");
+	if (!fp)
+	{
+		fp = fopen("E:\\U\\DPLL\\OutPut.txt", "w");
+	}
+	fprintf(fp,"****  %d 设为  ", *f_index_value);
+	if (*f_isTrue == 1)fprintf(fp, "TRUE\n");
+	if (*f_isTrue == -1)fprintf(fp, "FALSE\n");
 	while (this_value)//遍历这个参数出现的每一个位置
 	{
 		bool is_true_here = XOR(this_value->isNegative, *f_isTrue);
@@ -262,6 +280,8 @@ void RevertChange
 			back_value->nextValue_in_value->preValue_in_value = back_value;
 		if (valuesHead[back_value->m_value].latestValue_in_value == back_value->preValue_in_value)
 			valuesHead[back_value->m_value].latestValue_in_value = back_value;
+
+		AddCountAppear(back_value->m_value);
 		/*if (!valuesHead[back_value->m_value].nextValue_in_value)
 		{
 			valuesHead[back_value->m_value].nextValue_in_value = back_value;

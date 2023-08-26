@@ -1,2 +1,7 @@
-﻿  Solver.c
-  DPLL.vcxproj -> E:\U\DPLL\x64\Debug\DPLL.exe
+﻿  CNF_Reader.c
+  MAIN.c
+  Solver.c
+E:\U\DPLL\Solver.c(137,43): error C2088: “--”: 对于 struct 非法
+E:\U\DPLL\Solver.c(285,41): error C2088: “++”: 对于 struct 非法
+  Stack.c
+  正在生成代码...

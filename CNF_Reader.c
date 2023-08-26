@@ -76,6 +76,7 @@ void AddNextValue_of_Value(int index_value,struct ValueNode* new_value)
 		new_value->preValue_in_value = valuesHead[index_value].latestValue_in_value;
 	}
 	valuesHead[index_value].latestValue_in_value = new_value;
+	AddCountAppear(index_value);
 }
 void CreateValueHeadLink()
 {
@@ -148,12 +149,24 @@ void ReadCNF(char t)
 		return;*/
 	for (int i = 0; i < count_value; i++)
 	{
+		count_valueAppear[i].m_count = 0;
+		count_valueAppear[i].m_index_value = i;
+		count_valueAppear[i].next = NULL;
+		if (i == 0)
+			count_valueAppear[i].pre = NULL;
+		else
+		{
+			count_valueAppear[i].pre = &count_valueAppear[i - 1];
+			count_valueAppear[i].pre->next = &count_valueAppear[i];
+		}
+
 		valuesHead[i].m_truth = 0;
 		valuesHead[i].nextValue_in_value = NULL;
 		//valuesHead[i].valueSpeciallyInValueHead = NULL;
 		//valuesHead[i].latestValue_in_value = valuesHead[i].valueSpeciallyInValueHead;
 		valuesHead[i].latestValue_in_value = NULL;
 	}
+	head_count_valueAppear = &count_valueAppear[count_value - 1];
 	for (int i = 0; i < count_clause; i++)
 	{
 		clausesHead[i].nextValue_in_clause = NULL;
