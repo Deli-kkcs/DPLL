@@ -29,7 +29,7 @@ struct ValueHeadNode
 
 	struct ValueHeadNode* nextValueHead;			//下一个变量头结点
 	struct ValueHeadNode* preValueHead;				//上一个变量头结点
-}/*变量头结点数组*/valuesHead[2000],/*变量头结点的头结点*/ valuesHeadHead;
+}/*变量头结点数组*/valuesHead[10000],/*变量头结点的头结点*/ valuesHeadHead;
 //子句头结点
 struct ClauseHeadNode
 {
@@ -41,7 +41,7 @@ struct ClauseHeadNode
 
 	struct ClauseHeadNode* nextClauseHead;
 	struct ClauseHeadNode* preClauseHead;
-}/*子句头结点数组*/clausesHead[10000] ,/*子句头结点的头结点*/ clausesHeadHead;
+}/*子句头结点数组*/clausesHead[150000] ,/*子句头结点的头结点*/ clausesHeadHead;
 //三种栈
 struct Stack_Value 
 {

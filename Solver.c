@@ -163,6 +163,9 @@ void SetValue
 		RemoveValueHead(f_stack_RemovedValueHead, &valuesHead[*f_index_value]);
 		return;
 	}
+	printf("****  %d 设为  ", *f_index_value);
+	if (*f_isTrue == 1)printf("TRUE\n");
+	if (*f_isTrue == -1)printf("FALSE\n");
 	while (this_value)//遍历这个参数出现的每一个位置
 	{
 		bool is_true_here = XOR(this_value->isNegative, *f_isTrue);
@@ -239,17 +242,31 @@ void RevertChange
 	{
 		if (back_value->preValue_in_clause)
 			back_value->preValue_in_clause->nextValue_in_clause = back_value;
+		else
+			clausesHead[back_value->index_clause].nextValue_in_clause = back_value;
 		if (back_value->nextValue_in_clause)
 			back_value->nextValue_in_clause->preValue_in_clause = back_value;
 		if (clausesHead[back_value->index_clause].latestValue_in_clause == back_value->preValue_in_clause)
 			clausesHead[back_value->index_clause].latestValue_in_clause = back_value;
+		/*if (!clausesHead[back_value->index_clause].nextValue_in_clause)
+		{
+			clausesHead[back_value->index_clause].nextValue_in_clause = back_value;
+			back_value->preValue_in_clause = NULL;
+		}*/
 
 		if (back_value->preValue_in_value)
 			back_value->preValue_in_value->nextValue_in_value = back_value;
+		else
+			valuesHead[back_value->m_value].nextValue_in_value = back_value;
 		if (back_value->nextValue_in_value)
 			back_value->nextValue_in_value->preValue_in_value = back_value;
 		if (valuesHead[back_value->m_value].latestValue_in_value == back_value->preValue_in_value)
 			valuesHead[back_value->m_value].latestValue_in_value = back_value;
+		/*if (!valuesHead[back_value->m_value].nextValue_in_value)
+		{
+			valuesHead[back_value->m_value].nextValue_in_value = back_value;
+			back_value->preValue_in_value = NULL;
+		}*/
 		back_value = MyPop(f_stack_RemovedValue);
 	}
 }
@@ -278,17 +295,17 @@ bool DPLL()
 		SetValue(index_value_p, isTrue, &stack_RemovedValue , &stack_RemovedClauseHead, &stack_RemovedValueHead);
 	}
 	{
-		//if (CheckEmptyCNF())//没有句子
-		//{
-		//	MyPrintResult();
-		//	RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
-		//	return true;
-		//}
-		//if (CheckEmptyClause())//有空句子
-		//{
-		//	RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
-		//	return false;
-		//}
+		if (CheckEmptyCNF())//没有句子
+		{
+			MyPrintResult();
+			RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
+			return true;
+		}
+		if (CheckEmptyClause())//有空句子
+		{
+			RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
+			return false;
+		}
 	}
 	if (!isTrue)
 	{
@@ -325,12 +342,11 @@ bool DPLL()
 	*isTrue = 1;
 	SetValue(index_value_p, isTrue, &stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
 	state = DPLL();
+	RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
 	if (state)
 	{
-		RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
-		return state;
+		return true;
 	}
-
 	*isTrue = -1;
 	SetValue(index_value_p, isTrue, &stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
 	state = DPLL();

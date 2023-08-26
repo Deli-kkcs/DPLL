@@ -15,8 +15,11 @@ int main()
 /*
 c qw q
 c wawa
-p cnf 2 1
+p cnf 2 2
+1 2 0
 -1 -2 0
+-1 2 0
+-1 2 0
 
 */
 /*
