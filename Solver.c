@@ -86,6 +86,7 @@ void ChooseValue(int* f_index_value)
 	int a;
 	srand((unsigned)time(NULL));
 	int init_divided = count_clause / count_value;
+	//int mod = count_active_Value;
 	int mod = count_active_Value / init_divided;
 	while (mod == 0)
 	{

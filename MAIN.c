@@ -5,9 +5,14 @@
 //extern int count_value, count_clause;
 int main()
 {
-	//bool isCheckValue = false;
-	bool isCheckValue = true;
+	bool isCheckValue = false;
+	//bool isCheckValue = true;
+
+	clock_t start, end;
 	ReadCNF(GetLine_Exclude_C());
+	
+	start = clock();
+	
 	if (isCheckValue)
 	{
 		ReadValue();
@@ -20,7 +25,8 @@ int main()
 		if (count_solution == 0)
 			printf("¾øÉ±£¬Îâ½ã!\n");
 	}
-
+	end = clock();
+	printf("time=%f\n", (double)(end - start) / CLK_TCK);
 	return 0;
 }
 /*

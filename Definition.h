@@ -7,6 +7,7 @@
 #include<stdbool.h>
 #include<stdlib.h>
 #include<string.h>
+#include<time.h>
 int count_value, count_clause , count_solution , count_active_Value,index_lastSelected;
 int count_valueAppear_2[max_count_value];
 FILE* fp;
