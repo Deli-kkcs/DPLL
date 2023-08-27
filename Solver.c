@@ -5,7 +5,7 @@
 //extern int count_value, count_clause;
 bool XOR(bool A, int B)
 {
-	if (A && B == 1 || !A && B == -1)
+	if ((A && (B == 1)) || (!A && (B == -1)))
 		return false;
 	return true;
 }
@@ -82,8 +82,8 @@ void GetSingleValue_in_value(int* f_index_value, int** f_isTrue)
 }
 void ChooseValue(int* f_index_value)
 {
-	*f_index_value = valuesHeadHead.nextValueHead->m_value;
-	/*int a;
+	//*f_index_value = valuesHeadHead.nextValueHead->m_value;
+	int a;
 	srand((unsigned)time(NULL));
 	int init_divided = count_clause / count_value;
 	int mod = count_active_Value / init_divided;
@@ -98,7 +98,7 @@ void ChooseValue(int* f_index_value)
 		mod = count_active_Value / init_divided;
 	}
 	a = rand() % (mod);
-	*f_index_value = sorted_count_valueAppear[count_value - a].m_index_value;*/
+	*f_index_value = sorted_count_valueAppear[count_value - a].m_index_value;
 
 	/*
 	int max_value_appear_2 = -1;

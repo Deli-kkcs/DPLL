@@ -11,3 +11,5 @@ void CreateValueHeadLink();
 void CreateClauseHeadLink();
 void ReadClause(int index_clause);
 void ReadCNF(char t);
+void ReadValue();
+bool CheckValue();

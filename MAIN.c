@@ -5,23 +5,35 @@
 //extern int count_value, count_clause;
 int main()
 {
+	//bool isCheckValue = false;
+	bool isCheckValue = true;
 	ReadCNF(GetLine_Exclude_C());
-	count_solution = 0;
-	DPLL();
-	if (count_solution == 0)
-		printf("¾øÉ±£¬Îâ½ã!\n");
+	if (isCheckValue)
+	{
+		ReadValue();
+		CheckValue();
+	}
+	else
+	{
+		count_solution = 0;
+		DPLL();
+		if (count_solution == 0)
+			printf("¾øÉ±£¬Îâ½ã!\n");
+	}
+
 	return 0;
 }
 /*
 c qw q
 c wawa
-p cnf 10 6
+p cnf 4 6
 1 2 3 0
 -1 -2 0
 -1 -3 0
 -2 -3 0
 1 2 0
 1 3 0
+1 -1 -1 1
 2 3 0
 
 1 -2 -3 0

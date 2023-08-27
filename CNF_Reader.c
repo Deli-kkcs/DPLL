@@ -1,5 +1,6 @@
 #include"Definition.h"
 #include"CNF_Reader.h"
+#include"Solver.h"
 void MyGetString(char t[10])
 {
 	scanf("%s", t);
@@ -245,4 +246,49 @@ void ReadCNF(char t)
 	}
 	CreateValueHeadLink();
 	CreateClauseHeadLink();
+}
+void ReadValue()
+{
+	for (int i = 1; i <= count_value; i++)
+	{
+		int truth_value;
+		char t[10];
+		MyGetString(t);
+		if (t[0] == '-')
+		{
+			valuesHead[i].m_truth = -1;
+		}
+		else if (t[0] == '1')
+		{
+			valuesHead[i].m_truth = 1;
+		}
+		else
+		{
+			valuesHead[i].m_truth = 0;
+		}
+	}
+}
+bool CheckValue()
+{
+	for (int i = 0; i < count_clause; i++)
+	{
+		bool isTrueClause = false;
+		struct ValueNode* this_value_in_clause = clausesHead[i].nextValue_in_clause;
+		while (this_value_in_clause)
+		{
+			if (XOR(this_value_in_clause->isNegative, valuesHead[this_value_in_clause->m_value].m_truth))
+			{
+				isTrueClause = true;
+				break;
+			}
+			this_value_in_clause = this_value_in_clause->nextValue_in_clause;
+		}
+		if (!isTrueClause)
+		{
+			printf("\n*** 不核里解");
+			return false;
+		}
+	}
+	printf("\n*** 核里解");
+	return true;
 }
