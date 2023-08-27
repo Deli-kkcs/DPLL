@@ -82,13 +82,71 @@ void GetSingleValue_in_value(int* f_index_value, int** f_isTrue)
 }
 void ChooseValue(int* f_index_value)
 {
-	//*f_index_value = valuesHeadHead.nextValueHead->m_value;
-	*f_index_value = sorted_count_valueAppear[count_value].m_index_value;
-	/*if (!fp)
+	*f_index_value = valuesHeadHead.nextValueHead->m_value;
+	/*int a;
+	srand((unsigned)time(NULL));
+	int init_divided = count_clause / count_value;
+	int mod = count_active_Value / init_divided;
+	while (mod == 0)
+	{
+		init_divided /= 2;
+		if (init_divided == 0)
+		{
+			mod = count_active_Value;
+			break;
+		}
+		mod = count_active_Value / init_divided;
+	}
+	a = rand() % (mod);
+	*f_index_value = sorted_count_valueAppear[count_value - a].m_index_value;*/
+
+	/*
+	int max_value_appear_2 = -1;
+	int max_index_value = -1;
+	for (int i = 1; i <= count_value; i++)
+	{
+		count_valueAppear_2[i] = 0;
+	}
+	struct ClauseHeadNode* this_clauseHead = clausesHeadHead.nextClauseHead;
+	while (this_clauseHead)
+	{
+		if (this_clauseHead->count_activeValue == 2)
+		{
+			count_valueAppear_2[this_clauseHead->nextValue_in_clause->m_value]++;
+			if (count_valueAppear_2[this_clauseHead->nextValue_in_clause->m_value] > max_value_appear_2)
+			{
+				max_value_appear_2 = count_valueAppear_2[this_clauseHead->nextValue_in_clause->m_value];
+				max_index_value = this_clauseHead->nextValue_in_clause->m_value;
+			}
+			count_valueAppear_2[this_clauseHead->nextValue_in_clause->nextValue_in_clause->m_value]++;
+			if (count_valueAppear_2[this_clauseHead->nextValue_in_clause->nextValue_in_clause->m_value] > max_value_appear_2)
+			{
+				max_value_appear_2 = count_valueAppear_2[this_clauseHead->nextValue_in_clause->nextValue_in_clause->m_value];
+				max_index_value = this_clauseHead->nextValue_in_clause->nextValue_in_clause->m_value;
+			}
+		}
+		this_clauseHead = this_clauseHead->nextClauseHead;
+	}
+	if (max_index_value == -1)
+	{
+		*f_index_value = valuesHeadHead.nextValueHead->m_value;
+	}
+	else
+	{
+		*f_index_value = max_index_value;
+	}*/
+
+	if (index_lastSelected == *f_index_value)
+	{
+		printf(".");
+	}
+		
+	index_lastSelected = *f_index_value;
+	if (!fp)
 	{
 		fp = fopen("E:\\U\\DPLL\\OutPut.txt", "w");
-	}*/
-	//fprintf(fp, "2222  选择 %d\n", *f_index_value);
+	}
+	fprintf(fp, "2233  选择 %d-\n", *f_index_value);
 	/*if (*f_isTrue == 1)fprintf(fp, "TRUE\n");
 	if (*f_isTrue == -1)fprintf(fp, "FALSE\n");*/
 }
@@ -108,6 +166,7 @@ void RemoveValue_in_clause(struct Stack_Value** f_stack_RemovedValue, struct Val
 	if (removedClauseHead->nextValue_in_clause)
 		removedClauseHead->nextValue_in_clause->preValue_in_clause = NULL;*/
 	MyPush(f_stack_RemovedValue, removed_value);
+	clausesHead[removed_value->index_clause].count_activeValue--;
 	//return f_stack_RemovedValue;
 }
 void RemoveValue_in_value(struct Stack_ValueHead** f_stack_RemovedValueHead, struct ValueNode* removed_value)
@@ -124,11 +183,12 @@ void RemoveValue_in_value(struct Stack_ValueHead** f_stack_RemovedValueHead, str
 	//删除变量头结点
 	if (!may_removedValueHead->latestValue_in_value)//句子中这个节点是变量的唯一一次出现
 	{
-		if (may_removedValueHead->preValueHead)
+		RemoveValueHead(f_stack_RemovedValueHead, may_removedValueHead);
+		/*if (may_removedValueHead->preValueHead)
 			may_removedValueHead->preValueHead->nextValueHead = may_removedValueHead->nextValueHead;
 		if (may_removedValueHead->nextValueHead)
 			may_removedValueHead->nextValueHead->preValueHead = may_removedValueHead->preValueHead;
-		MyPush_3(f_stack_RemovedValueHead, may_removedValueHead);
+		MyPush_3(f_stack_RemovedValueHead, may_removedValueHead);*/
 	}
 	MinusCountAppear(removed_value->m_value);
 }
@@ -151,6 +211,7 @@ void RemoveValueHead(struct Stack_ValueHead** f_stack_RemovedValueHead, struct V
 		removed_valueHead->nextValueHead->preValueHead = removed_valueHead->preValueHead;
 	}
 	MyPush_3(f_stack_RemovedValueHead,removed_valueHead);
+	count_active_Value--;
 }
 
 
@@ -244,6 +305,8 @@ void RevertChange
 		if (back_valueHead->nextValueHead)
 			back_valueHead->nextValueHead->preValueHead = back_valueHead;
 		back_valueHead->m_truth = 0;
+		count_active_Value++;
+
 		back_valueHead = MyPop_3(f_stack_RemovedValueHead);
 	}
 	struct ValueNode* back_value = MyPop(f_stack_RemovedValue);
@@ -273,6 +336,7 @@ void RevertChange
 			valuesHead[back_value->m_value].latestValue_in_value = back_value;
 
 		AddCountAppear(back_value->m_value);
+		clausesHead[back_value->index_clause].count_activeValue++;
 		/*if (!valuesHead[back_value->m_value].nextValue_in_value)
 		{
 			valuesHead[back_value->m_value].nextValue_in_value = back_value;
@@ -305,19 +369,19 @@ bool DPLL()
 			break;
 		SetValue(index_value_p, isTrue, &stack_RemovedValue , &stack_RemovedClauseHead, &stack_RemovedValueHead);
 	}
-	{
-		if (CheckEmptyCNF())//没有句子
-		{
-			MyPrintResult();
-			RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
-			return true;
-		}
-		if (CheckEmptyClause())//有空句子
-		{
-			RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
-			return false;
-		}
-	}
+	//{
+		//if (CheckEmptyCNF())//没有句子
+		//{
+		//	MyPrintResult();
+		//	RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
+		//	return true;
+		//}
+		//if (CheckEmptyClause())//有空句子
+		//{
+		//	RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
+		//	return false;
+		//}
+	//}
 	if (!isTrue)
 	{
 		isTrue = (int*)malloc(sizeof(int));

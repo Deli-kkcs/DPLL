@@ -127,6 +127,7 @@ void AddNextValue_of_Clause(int index_clause,struct ValueNode* new_value)
 		new_value->preValue_in_clause = clausesHead[index_clause].latestValue_in_clause;
 	}
 	clausesHead[index_clause].latestValue_in_clause = new_value;
+	clausesHead[index_clause].count_activeValue++;
 }
 void AddNextValue_of_Value(int index_value,struct ValueNode* new_value)
 {
@@ -207,6 +208,8 @@ void ReadCNF(char t)
 	if (str[0] != 'c')
 		return;
 	scanf("%d%d", &count_value, &count_clause);
+	count_active_Value = count_value;
+	index_lastSelected = -1;
 	/*values = malloc(sizeof(struct ValueHeadNode) * (count_value + 1));
 	if (!values)
 		return;
@@ -215,6 +218,8 @@ void ReadCNF(char t)
 		return;*/
 	for (int i = 0; i <= count_value; i++)
 	{
+		count_valueAppear_2[i] = 0;
+
 		count_valueAppear[i].m_index_sorted = i;
 		count_valueAppear[i].m_count = count_valueAppear[i].m_index_value = -9999;
 		sorted_count_valueAppear[i].m_count = 0;
@@ -228,6 +233,7 @@ void ReadCNF(char t)
 	}
 	for (int i = 0; i < count_clause; i++)
 	{
+		clausesHead[i].count_activeValue = 0;
 		clausesHead[i].nextValue_in_clause = NULL;
 		clausesHead[i].nextClauseHead = NULL;
 		clausesHead[i].preClauseHead = NULL;

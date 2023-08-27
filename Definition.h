@@ -7,7 +7,8 @@
 #include<stdbool.h>
 #include<stdlib.h>
 #include<string.h>
-int count_value, count_clause , count_solution;
+int count_value, count_clause , count_solution , count_active_Value,index_lastSelected;
+int count_valueAppear_2[max_count_value];
 FILE* fp;
 struct CountAppear
 {
@@ -43,7 +44,7 @@ struct ValueHeadNode
 //子句头结点
 struct ClauseHeadNode
 {
-	//int count_activeValue;
+	int count_activeValue;
 	struct ValueNode* latestValue_in_clause;		//子句中最后一个变量
 
 	//struct ValueNode* valueSpeciallyInClauseHead;	//子句头结点特有的变量节点类型
