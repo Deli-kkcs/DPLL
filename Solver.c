@@ -1,6 +1,7 @@
 #include"Definition.h"
 #include"Solver.h"
 #include"Stack.h"
+#include"CNF_Reader.h"
 //extern int count_value, count_clause;
 bool XOR(bool A, int B)
 {
@@ -81,19 +82,15 @@ void GetSingleValue_in_value(int* f_index_value, int** f_isTrue)
 }
 void ChooseValue(int* f_index_value)
 {
-	/*int max_appear = -1;
-    int index_max_appear = -1;*/
-	*f_index_value = valuesHeadHead.nextValueHead->m_value;
-	/*struct ValueHeadNode* this_valueHead = valuesHeadHead.nextValueHead;
-	while (this_valueHead)
+	//*f_index_value = valuesHeadHead.nextValueHead->m_value;
+	*f_index_value = sorted_count_valueAppear[count_value].m_index_value;
+	/*if (!fp)
 	{
-		if (count_valueAppear[this_valueHead->m_value] > max_appear)
-		{
-			max_appear = count_valueAppear[this_valueHead->m_value];
-			*f_index_value = this_valueHead->m_value;
-		}
-		this_valueHead = this_valueHead->nextValueHead;
+		fp = fopen("E:\\U\\DPLL\\OutPut.txt", "w");
 	}*/
+	//fprintf(fp, "2222  选择 %d\n", *f_index_value);
+	/*if (*f_isTrue == 1)fprintf(fp, "TRUE\n");
+	if (*f_isTrue == -1)fprintf(fp, "FALSE\n");*/
 }
 void RemoveValue_in_clause(struct Stack_Value** f_stack_RemovedValue, struct ValueNode* removed_value)
 {
@@ -177,13 +174,7 @@ void SetValue
 		RemoveValueHead(f_stack_RemovedValueHead, &valuesHead[*f_index_value]);
 		return;
 	}
-	if (!fp)
-	{
-		fp = fopen("E:\\U\\DPLL\\OutPut.txt", "w");
-	}
-	fprintf(fp,"****  %d 设为  ", *f_index_value);
-	if (*f_isTrue == 1)fprintf(fp, "TRUE\n");
-	if (*f_isTrue == -1)fprintf(fp, "FALSE\n");
+	
 	while (this_value)//遍历这个参数出现的每一个位置
 	{
 		bool is_true_here = XOR(this_value->isNegative, *f_isTrue);

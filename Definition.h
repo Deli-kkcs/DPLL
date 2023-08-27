@@ -13,26 +13,9 @@ struct CountAppear
 {
 	int m_count;
 	int m_index_value;
-	struct CountAppear* next;
-	struct CountAppear* pre;
-}count_valueAppear[max_count_value],*head_count_valueAppear;
-void AddCountAppear(int f_index_value)
-{
-	count_valueAppear[f_index_value].m_count++;
-	while (count_valueAppear[f_index_value].next)
-	{
-		if (count_valueAppear[f_index_value].m_count > count_valueAppear[f_index_value].next->m_count)
-		{
+	int m_index_sorted;
+}count_valueAppear[max_count_value],sorted_count_valueAppear[max_count_value];
 
-		}
-	}
-	//TODO_2
-}
-void MinusCountAppear(int f_index_value)
-{
-	count_valueAppear[f_index_value].m_count--;
-	//TODO_2
-}
 //变量结点
 struct ValueNode
 {

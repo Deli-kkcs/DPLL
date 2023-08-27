@@ -3,6 +3,8 @@ char MyGetChar();
 char GetLine_Exclude_C();
 int Change_string_to_int(char t[10]);
 struct ValueNode* CreateNewValueNode(bool isNegative, int index_value, int index_clause);
+void AddCountAppear(int f_index_value);
+void MinusCountAppear(int f_index_value);
 void AddNextValue_of_Clause(int index_clause, struct ValueNode* new_value);
 void AddNextValue_of_Value(int index_value, struct ValueNode* new_value);
 void CreateValueHeadLink();

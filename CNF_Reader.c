@@ -47,6 +47,72 @@ struct ValueNode* CreateNewValueNode(bool isNegative, int index_value,int index_
 	new_value->nextValue_in_value = NULL;
 	return new_value;
 }
+void AddCountAppear(int f_index_value)
+{
+	int this_index_sorted = count_valueAppear[f_index_value].m_index_sorted;
+	sorted_count_valueAppear[this_index_sorted].m_count++;
+	while(this_index_sorted < count_value)
+	{
+		if (sorted_count_valueAppear[this_index_sorted].m_count <= sorted_count_valueAppear[this_index_sorted+1].m_count)
+			break;
+		count_valueAppear[f_index_value].m_index_sorted++;
+		count_valueAppear[sorted_count_valueAppear[this_index_sorted + 1].m_index_value].m_index_sorted--;
+		int temp_index_value = sorted_count_valueAppear[this_index_sorted].m_index_value;
+		sorted_count_valueAppear[this_index_sorted].m_index_value = sorted_count_valueAppear[this_index_sorted + 1].m_index_value;
+		sorted_count_valueAppear[this_index_sorted + 1].m_index_value = temp_index_value;
+		int temp_index_count = sorted_count_valueAppear[this_index_sorted].m_count;
+		sorted_count_valueAppear[this_index_sorted].m_count = sorted_count_valueAppear[this_index_sorted+1].m_count;
+		sorted_count_valueAppear[this_index_sorted+1].m_count = temp_index_count;
+		this_index_sorted++;
+	}
+	while (this_index_sorted > 0)
+	{
+		if (sorted_count_valueAppear[this_index_sorted].m_count >= sorted_count_valueAppear[this_index_sorted - 1].m_count)
+			break;
+		count_valueAppear[f_index_value].m_index_sorted--;
+		count_valueAppear[sorted_count_valueAppear[this_index_sorted - 1].m_index_value].m_index_sorted++;
+		int temp_index_value = sorted_count_valueAppear[this_index_sorted].m_index_value;
+		sorted_count_valueAppear[this_index_sorted].m_index_value = sorted_count_valueAppear[this_index_sorted - 1].m_index_value;
+		sorted_count_valueAppear[this_index_sorted - 1].m_index_value = temp_index_value;
+		int temp_index_count = sorted_count_valueAppear[this_index_sorted].m_count;
+		sorted_count_valueAppear[this_index_sorted].m_count = sorted_count_valueAppear[this_index_sorted - 1].m_count;
+		sorted_count_valueAppear[this_index_sorted - 1].m_count = temp_index_count;
+		this_index_sorted--;
+	}
+}
+void MinusCountAppear(int f_index_value)
+{
+	int this_index_sorted = count_valueAppear[f_index_value].m_index_sorted;
+	sorted_count_valueAppear[this_index_sorted].m_count--;
+	while (this_index_sorted < count_value)
+	{
+		if (sorted_count_valueAppear[this_index_sorted].m_count <= sorted_count_valueAppear[this_index_sorted + 1].m_count)
+			break;
+		count_valueAppear[f_index_value].m_index_sorted++;
+		count_valueAppear[sorted_count_valueAppear[this_index_sorted + 1].m_index_value].m_index_sorted--;
+		int temp_index_value = sorted_count_valueAppear[this_index_sorted].m_index_value;
+		sorted_count_valueAppear[this_index_sorted].m_index_value = sorted_count_valueAppear[this_index_sorted + 1].m_index_value;
+		sorted_count_valueAppear[this_index_sorted + 1].m_index_value = temp_index_value;
+		int temp_index_count = sorted_count_valueAppear[this_index_sorted].m_count;
+		sorted_count_valueAppear[this_index_sorted].m_count = sorted_count_valueAppear[this_index_sorted + 1].m_count;
+		sorted_count_valueAppear[this_index_sorted + 1].m_count = temp_index_count;
+		this_index_sorted++;
+	}
+	while (this_index_sorted > 0)
+	{
+		if (sorted_count_valueAppear[this_index_sorted].m_count >= sorted_count_valueAppear[this_index_sorted - 1].m_count)
+			break;
+		count_valueAppear[f_index_value].m_index_sorted--;
+		count_valueAppear[sorted_count_valueAppear[this_index_sorted - 1].m_index_value].m_index_sorted++;
+		int temp_index_value = sorted_count_valueAppear[this_index_sorted].m_index_value;
+		sorted_count_valueAppear[this_index_sorted].m_index_value = sorted_count_valueAppear[this_index_sorted - 1].m_index_value;
+		sorted_count_valueAppear[this_index_sorted - 1].m_index_value = temp_index_value;
+		int temp_index_count = sorted_count_valueAppear[this_index_sorted].m_count;
+		sorted_count_valueAppear[this_index_sorted].m_count = sorted_count_valueAppear[this_index_sorted - 1].m_count;
+		sorted_count_valueAppear[this_index_sorted - 1].m_count = temp_index_count;
+		this_index_sorted--;
+	}
+}
 void AddNextValue_of_Clause(int index_clause,struct ValueNode* new_value)
 {
 	if (!clausesHead[index_clause].latestValue_in_clause)
@@ -147,26 +213,19 @@ void ReadCNF(char t)
 	clauses = malloc(sizeof(struct ValueHeadNode) * (count_clause + 1));
 	if (!clauses)
 		return;*/
-	for (int i = 0; i < count_value; i++)
+	for (int i = 0; i <= count_value; i++)
 	{
-		count_valueAppear[i].m_count = 0;
-		count_valueAppear[i].m_index_value = i;
-		count_valueAppear[i].next = NULL;
-		if (i == 0)
-			count_valueAppear[i].pre = NULL;
-		else
-		{
-			count_valueAppear[i].pre = &count_valueAppear[i - 1];
-			count_valueAppear[i].pre->next = &count_valueAppear[i];
-		}
-
+		count_valueAppear[i].m_index_sorted = i;
+		count_valueAppear[i].m_count = count_valueAppear[i].m_index_value = -9999;
+		sorted_count_valueAppear[i].m_count = 0;
+		sorted_count_valueAppear[i].m_index_value = i;
+		sorted_count_valueAppear[i].m_index_sorted = -9999;
 		valuesHead[i].m_truth = 0;
 		valuesHead[i].nextValue_in_value = NULL;
 		//valuesHead[i].valueSpeciallyInValueHead = NULL;
 		//valuesHead[i].latestValue_in_value = valuesHead[i].valueSpeciallyInValueHead;
 		valuesHead[i].latestValue_in_value = NULL;
 	}
-	head_count_valueAppear = &count_valueAppear[count_value - 1];
 	for (int i = 0; i < count_clause; i++)
 	{
 		clausesHead[i].nextValue_in_clause = NULL;
