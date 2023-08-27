@@ -9,6 +9,7 @@ int main()
 	//bool isCheckValue = true;
 
 	clock_t start, end;
+
 	ReadCNF(GetLine_Exclude_C());
 	
 	start = clock();
@@ -26,28 +27,21 @@ int main()
 			printf("¾øÉ±£¬Îâ½ã!\n");
 	}
 	end = clock();
-	printf("time=%f\n", (double)(end - start) / CLK_TCK);
+	printf("time = %f s\n", (double)(end - start) / CLK_TCK);
 	return 0;
 }
 /*
 c qw q
 c wawa
-p cnf 4 6
+p cnf 4 4
 1 2 3 0
 -1 -2 0
--1 -3 0
--2 -3 0
-1 2 0
-1 3 0
-1 -1 -1 1
-2 3 0
+3 3 3 0
+-1 -1 -1 0
 
-1 -2 -3 0
--1 2 -3 0
-3 4 0
--4 0
-0
-
+c wawa
+p cnf 2 1
+1 0
 */
 /*
 

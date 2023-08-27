@@ -9,7 +9,6 @@
 #include<string.h>
 #include<time.h>
 int count_value, count_clause , count_solution , count_active_Value,index_lastSelected;
-int count_valueAppear_2[max_count_value];
 FILE* fp;
 struct CountAppear
 {
@@ -17,7 +16,13 @@ struct CountAppear
 	int m_index_value;
 	int m_index_sorted;
 }count_valueAppear[max_count_value],sorted_count_valueAppear[max_count_value];
-
+struct CountPosi_or_Nega
+{
+	int m_count_posi;
+	int m_count_nega;
+	int m_index_value;
+	int m_index_sorted;
+}count_P[max_count_value],sorted_count_P[max_count_value],count_N[max_count_value], sorted_count_N[max_count_value];
 //变量结点
 struct ValueNode
 {

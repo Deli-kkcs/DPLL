@@ -114,6 +114,145 @@ void MinusCountAppear(int f_index_value)
 		this_index_sorted--;
 	}
 }
+void AddCountPoN(int f_index_value , bool f_isNegative)
+{
+	if (f_isNegative)
+	{
+		int this_index_sorted = count_N[f_index_value].m_index_sorted;
+		sorted_count_N[this_index_sorted].m_count_nega++;
+		while (this_index_sorted < count_value)
+		{
+			if (sorted_count_N[this_index_sorted].m_count_nega <= sorted_count_N[this_index_sorted + 1].m_count_nega)
+				break;
+			count_N[f_index_value].m_index_sorted++;
+			count_N[sorted_count_N[this_index_sorted + 1].m_index_value].m_index_sorted--;
+			int temp_index_value = sorted_count_N[this_index_sorted].m_index_value;
+			sorted_count_N[this_index_sorted].m_index_value = sorted_count_N[this_index_sorted + 1].m_index_value;
+			sorted_count_N[this_index_sorted + 1].m_index_value = temp_index_value;
+			int temp_index_count_nega = sorted_count_N[this_index_sorted].m_count_nega;
+			sorted_count_N[this_index_sorted].m_count_nega = sorted_count_N[this_index_sorted + 1].m_count_nega;
+			sorted_count_N[this_index_sorted + 1].m_count_nega = temp_index_count_nega;
+			this_index_sorted++;
+		}
+		while (this_index_sorted > 0)
+		{
+			if (sorted_count_N[this_index_sorted].m_count_nega >= sorted_count_N[this_index_sorted - 1].m_count_nega)
+				break;
+			count_N[f_index_value].m_index_sorted--;
+			count_N[sorted_count_N[this_index_sorted - 1].m_index_value].m_index_sorted++;
+			int temp_index_value = sorted_count_N[this_index_sorted].m_index_value;
+			sorted_count_N[this_index_sorted].m_index_value = sorted_count_N[this_index_sorted - 1].m_index_value;
+			sorted_count_N[this_index_sorted - 1].m_index_value = temp_index_value;
+			int temp_index_count_nega = sorted_count_N[this_index_sorted].m_count_nega;
+			sorted_count_N[this_index_sorted].m_count_nega = sorted_count_N[this_index_sorted - 1].m_count_nega;
+			sorted_count_N[this_index_sorted - 1].m_count_nega = temp_index_count_nega;
+			this_index_sorted--;
+		}
+	}
+	else
+	{
+		int this_index_sorted = count_P[f_index_value].m_index_sorted;
+		sorted_count_P[this_index_sorted].m_count_posi++;
+		while (this_index_sorted < count_value)
+		{
+			if (sorted_count_P[this_index_sorted].m_count_posi <= sorted_count_P[this_index_sorted + 1].m_count_posi)
+				break;
+			count_P[f_index_value].m_index_sorted++;
+			count_P[sorted_count_P[this_index_sorted + 1].m_index_value].m_index_sorted--;
+			int temp_index_value = sorted_count_P[this_index_sorted].m_index_value;
+			sorted_count_P[this_index_sorted].m_index_value = sorted_count_P[this_index_sorted + 1].m_index_value;
+			sorted_count_P[this_index_sorted + 1].m_index_value = temp_index_value;
+			int temp_index_count_posi = sorted_count_P[this_index_sorted].m_count_posi;
+			sorted_count_P[this_index_sorted].m_count_posi = sorted_count_P[this_index_sorted + 1].m_count_posi;
+			sorted_count_P[this_index_sorted + 1].m_count_posi = temp_index_count_posi;
+			this_index_sorted++;
+		}
+		while (this_index_sorted > 0)
+		{
+			if (sorted_count_P[this_index_sorted].m_count_posi >= sorted_count_P[this_index_sorted - 1].m_count_posi)
+				break;
+			count_P[f_index_value].m_index_sorted--;
+			count_P[sorted_count_P[this_index_sorted - 1].m_index_value].m_index_sorted++;
+			int temp_index_value = sorted_count_P[this_index_sorted].m_index_value;
+			sorted_count_P[this_index_sorted].m_index_value = sorted_count_P[this_index_sorted - 1].m_index_value;
+			sorted_count_P[this_index_sorted - 1].m_index_value = temp_index_value;
+			int temp_index_count_posi = sorted_count_P[this_index_sorted].m_count_posi;
+			sorted_count_P[this_index_sorted].m_count_posi = sorted_count_P[this_index_sorted - 1].m_count_posi;
+			sorted_count_P[this_index_sorted - 1].m_count_posi = temp_index_count_posi;
+			this_index_sorted--;
+		}
+	}
+}
+void MinusCountPoN(int f_index_value, bool f_isNegative)
+{
+	int this_index_sorted = count_P[f_index_value].m_index_sorted;
+	if (f_isNegative)
+	{
+		int this_index_sorted = count_N[f_index_value].m_index_sorted;
+		sorted_count_N[this_index_sorted].m_count_nega--;
+		while (this_index_sorted < count_value)
+		{
+			if (sorted_count_N[this_index_sorted].m_count_nega <= sorted_count_N[this_index_sorted + 1].m_count_nega)
+				break;
+			count_N[f_index_value].m_index_sorted++;
+			count_N[sorted_count_N[this_index_sorted + 1].m_index_value].m_index_sorted--;
+			int temp_index_value = sorted_count_N[this_index_sorted].m_index_value;
+			sorted_count_N[this_index_sorted].m_index_value = sorted_count_N[this_index_sorted + 1].m_index_value;
+			sorted_count_N[this_index_sorted + 1].m_index_value = temp_index_value;
+			int temp_index_count_nega = sorted_count_N[this_index_sorted].m_count_nega;
+			sorted_count_N[this_index_sorted].m_count_nega = sorted_count_N[this_index_sorted + 1].m_count_nega;
+			sorted_count_N[this_index_sorted + 1].m_count_nega = temp_index_count_nega;
+			this_index_sorted++;
+		}
+		while (this_index_sorted > 0)
+		{
+			if (sorted_count_N[this_index_sorted].m_count_nega >= sorted_count_N[this_index_sorted - 1].m_count_nega)
+				break;
+			count_N[f_index_value].m_index_sorted--;
+			count_N[sorted_count_N[this_index_sorted - 1].m_index_value].m_index_sorted++;
+			int temp_index_value = sorted_count_N[this_index_sorted].m_index_value;
+			sorted_count_N[this_index_sorted].m_index_value = sorted_count_N[this_index_sorted - 1].m_index_value;
+			sorted_count_N[this_index_sorted - 1].m_index_value = temp_index_value;
+			int temp_index_count_nega = sorted_count_N[this_index_sorted].m_count_nega;
+			sorted_count_N[this_index_sorted].m_count_nega = sorted_count_N[this_index_sorted - 1].m_count_nega;
+			sorted_count_N[this_index_sorted - 1].m_count_nega = temp_index_count_nega;
+			this_index_sorted--;
+		}
+	}
+	else
+	{
+		int this_index_sorted = count_P[f_index_value].m_index_sorted;
+		sorted_count_P[this_index_sorted].m_count_posi--;
+		while (this_index_sorted < count_value)
+		{
+			if (sorted_count_P[this_index_sorted].m_count_posi <= sorted_count_P[this_index_sorted + 1].m_count_posi)
+				break;
+			count_P[f_index_value].m_index_sorted++;
+			count_P[sorted_count_P[this_index_sorted + 1].m_index_value].m_index_sorted--;
+			int temp_index_value = sorted_count_P[this_index_sorted].m_index_value;
+			sorted_count_P[this_index_sorted].m_index_value = sorted_count_P[this_index_sorted + 1].m_index_value;
+			sorted_count_P[this_index_sorted + 1].m_index_value = temp_index_value;
+			int temp_index_count_posi = sorted_count_P[this_index_sorted].m_count_posi;
+			sorted_count_P[this_index_sorted].m_count_posi = sorted_count_P[this_index_sorted + 1].m_count_posi;
+			sorted_count_P[this_index_sorted + 1].m_count_posi = temp_index_count_posi;
+			this_index_sorted++;
+		}
+		while (this_index_sorted > 0)
+		{
+			if (sorted_count_P[this_index_sorted].m_count_posi >= sorted_count_P[this_index_sorted - 1].m_count_posi)
+				break;
+			count_P[f_index_value].m_index_sorted--;
+			count_P[sorted_count_P[this_index_sorted - 1].m_index_value].m_index_sorted++;
+			int temp_index_value = sorted_count_P[this_index_sorted].m_index_value;
+			sorted_count_P[this_index_sorted].m_index_value = sorted_count_P[this_index_sorted - 1].m_index_value;
+			sorted_count_P[this_index_sorted - 1].m_index_value = temp_index_value;
+			int temp_index_count_posi = sorted_count_P[this_index_sorted].m_count_posi;
+			sorted_count_P[this_index_sorted].m_count_posi = sorted_count_P[this_index_sorted - 1].m_count_posi;
+			sorted_count_P[this_index_sorted - 1].m_count_posi = temp_index_count_posi;
+			this_index_sorted--;
+		}
+	}
+}
 void AddNextValue_of_Clause(int index_clause,struct ValueNode* new_value)
 {
 	if (!clausesHead[index_clause].latestValue_in_clause)
@@ -145,6 +284,7 @@ void AddNextValue_of_Value(int index_value,struct ValueNode* new_value)
 	}
 	valuesHead[index_value].latestValue_in_value = new_value;
 	AddCountAppear(index_value);
+	AddCountPoN(index_value , new_value->isNegative);
 }
 void CreateValueHeadLink()
 {
@@ -219,13 +359,24 @@ void ReadCNF(char t)
 		return;*/
 	for (int i = 0; i <= count_value; i++)
 	{
-		count_valueAppear_2[i] = 0;
+		count_P[i].m_index_sorted = i;
+		count_P[i].m_count_nega = count_P[i].m_count_posi = count_P[i].m_index_value = -9999;
+		sorted_count_P[i].m_count_nega = sorted_count_P[i].m_count_posi = 0;
+		sorted_count_P[i].m_index_value = i;
+		sorted_count_P[i].m_index_sorted = -9999;
+
+		count_N[i].m_index_sorted = i;
+		count_N[i].m_count_nega = count_P[i].m_count_posi = count_P[i].m_index_value = -9999;
+		sorted_count_N[i].m_count_nega = sorted_count_N[i].m_count_posi = 0;
+		sorted_count_N[i].m_index_value = i;
+		sorted_count_N[i].m_index_sorted = -9999;
 
 		count_valueAppear[i].m_index_sorted = i;
 		count_valueAppear[i].m_count = count_valueAppear[i].m_index_value = -9999;
 		sorted_count_valueAppear[i].m_count = 0;
 		sorted_count_valueAppear[i].m_index_value = i;
 		sorted_count_valueAppear[i].m_index_sorted = -9999;
+
 		valuesHead[i].m_truth = 0;
 		valuesHead[i].nextValue_in_value = NULL;
 		//valuesHead[i].valueSpeciallyInValueHead = NULL;
@@ -251,7 +402,6 @@ void ReadValue()
 {
 	for (int i = 1; i <= count_value; i++)
 	{
-		int truth_value;
 		char t[10];
 		MyGetString(t);
 		if (t[0] == '-')

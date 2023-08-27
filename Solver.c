@@ -80,9 +80,16 @@ void GetSingleValue_in_value(int* f_index_value, int** f_isTrue)
 	*f_isTrue = NULL;
 	return;
 }
-void ChooseValue(int* f_index_value)
+
+void ChooseValue(int* f_index_value,int* f_isTrue)
 {
-	//*f_index_value = valuesHeadHead.nextValueHead->m_value;
+	//first in valuesHead
+	/*
+	*f_index_value = valuesHeadHead.nextValueHead->m_value;
+	*f_isTrue = 0;
+	*/
+	//randomly in sorted_valueAppear
+	/*
 	int a;
 	srand((unsigned)time(NULL));
 	int init_divided = count_clause / count_value;
@@ -100,7 +107,10 @@ void ChooseValue(int* f_index_value)
 	}
 	a = rand() % (mod);
 	*f_index_value = sorted_count_valueAppear[count_value - a].m_index_value;
-
+	
+	*f_isTrue = 0;
+	*/
+	//in clause that has a length of 2
 	/*
 	int max_value_appear_2 = -1;
 	int max_index_value = -1;
@@ -136,20 +146,81 @@ void ChooseValue(int* f_index_value)
 	{
 		*f_index_value = max_index_value;
 	}*/
-
-	if (index_lastSelected == *f_index_value)
+	//in sorted_count_valuePoN
+	
+	if (sorted_count_N[count_value].m_count_nega >= sorted_count_P[count_value].m_count_posi)
 	{
-		printf(".");
+		*f_isTrue = -1;
+		*f_index_value = sorted_count_N[count_value].m_index_value;
 	}
-		
-	index_lastSelected = *f_index_value;
+	else
+	{
+		*f_isTrue = 1;
+		*f_index_value = sorted_count_P[count_value].m_index_value;
+	}
+	
+	
+	
+	
+	
+
+	// to set f_isTrue !!
+	
+	
+	/*struct ClauseHeadNode* this_clauseHead = clausesHeadHead.nextClauseHead;
+	while (this_clauseHead)
+	{
+		struct ValueNode* this_value = this_clauseHead->nextValue_in_clause;
+		while (this_value)
+		{
+			this_value->isNegative ? count_P[this_value->m_value].count_nega++ : count_P[this_value->m_value].count_posi++;
+			if (count_P[this_value->m_value].count_nega > max_nega_appear)
+			{
+				max_nega_appear = count_P[this_value->m_value].count_nega;
+				index_max_nega_appear = this_value->m_value;
+			}
+			if (count_P[this_value->m_value].count_posi > max_posi_appear)
+			{
+				max_posi_appear = count_P[this_value->m_value].count_posi;
+				index_max_posi_appear = this_value->m_value;
+			}
+			this_value = this_value->nextValue_in_clause;
+		}
+		this_clauseHead = this_clauseHead->nextClauseHead;
+	}
+	if (max_nega_appear >= max_posi_appear)
+	{
+		*f_index_value = index_max_nega_appear;
+		*f_isTrue = -1;
+	}
+	else
+	{
+		*f_index_value = index_max_posi_appear;
+		*f_isTrue = 1;
+	}*/
 	if (!fp)
 	{
 		fp = fopen("E:\\U\\DPLL\\OutPut.txt", "w");
 	}
-	fprintf(fp, "2233  Ñ¡Ôñ %d-\n", *f_index_value);
-	/*if (*f_isTrue == 1)fprintf(fp, "TRUE\n");
-	if (*f_isTrue == -1)fprintf(fp, "FALSE\n");*/
+	fprintf(fp, "**** %d-", *f_index_value);
+	if (*f_isTrue == 1)
+		fprintf(fp, "TRUE");
+	if (*f_isTrue == -1)
+		fprintf(fp, "FALSE");
+	fprintf(fp, "\n");
+	
+	if (index_lastSelected == *f_index_value)
+	{
+		//if (*f_index_value == 12)
+		{
+			printf(".");
+		}
+		/*
+		ChooseValue(f_index_value, f_isTrue);
+		return;*/
+	}
+	index_lastSelected = *f_index_value;
+	
 }
 void RemoveValue_in_clause(struct Stack_Value** f_stack_RemovedValue, struct ValueNode* removed_value)
 {
@@ -192,6 +263,7 @@ void RemoveValue_in_value(struct Stack_ValueHead** f_stack_RemovedValueHead, str
 		MyPush_3(f_stack_RemovedValueHead, may_removedValueHead);*/
 	}
 	MinusCountAppear(removed_value->m_value);
+	MinusCountPoN(removed_value->m_value, removed_value->isNegative);
 }
 void RemoveClauseHead(struct Stack_ClauseHead** f_stack_RemovedClauseHead, struct ClauseHeadNode* removed_clauseHead)
 {
@@ -337,6 +409,7 @@ void RevertChange
 			valuesHead[back_value->m_value].latestValue_in_value = back_value;
 
 		AddCountAppear(back_value->m_value);
+		AddCountPoN(back_value->m_value, back_value->isNegative);
 		clausesHead[back_value->index_clause].count_activeValue++;
 		/*if (!valuesHead[back_value->m_value].nextValue_in_value)
 		{
@@ -413,19 +486,38 @@ bool DPLL()
 	}
 
 	bool state = false;
-	ChooseValue(index_value_p);
-
-	*isTrue = 1;
-	SetValue(index_value_p, isTrue, &stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
-	state = DPLL();
-	RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
-	if (state)
+	ChooseValue(index_value_p, isTrue);
+	if (*isTrue == -1)
 	{
-		return true;
+		*isTrue = -1;
+		SetValue(index_value_p, isTrue, &stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
+		state = DPLL();
+		RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
+		if (state)
+		{
+			return true;
+		}
+		*isTrue = 1;
+		SetValue(index_value_p, isTrue, &stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
+		state = DPLL();
+		RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
+		return state;
 	}
-	*isTrue = -1;
-	SetValue(index_value_p, isTrue, &stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
-	state = DPLL();
-	RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
-	return state;
+	else
+	{
+		*isTrue = 1;
+		SetValue(index_value_p, isTrue, &stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
+		state = DPLL();
+		RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
+		if (state)
+		{
+			return true;
+		}
+		*isTrue = -1;
+		SetValue(index_value_p, isTrue, &stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
+		state = DPLL();
+		RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
+		return state;
+	}
+	
 }
