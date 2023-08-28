@@ -3,27 +3,30 @@
 #include"Solver.h"
 void MyGetString(char t[10])
 {
-	scanf("%s", t);
+	fscanf(fp_InPut_CNF,"%s", t);
+	//scanf("%s", t);
 }
-char MyGetChar()
+void MyGetChar(char *f_char)
 {
-	return getchar();
+	fscanf(fp_InPut_CNF, "%c", f_char);
+	//return getchar();
 }
 void MyGetInt(int *f_int)
 {
-	scanf("%d", f_int);
+	fscanf(fp_InPut_CNF,"%d", f_int);
+	//scanf("%d", f_int);
 }
 char GetLine_Exclude_C()
 {
 	char t = '0';
 	while (1)
 	{
-		t = MyGetChar();
+		MyGetChar(&t);
 		if (t != 'c')
 			break;
 		while (t != '\n')
 		{
-			t = MyGetChar();
+			MyGetChar(&t);
 		}
 	}
 	return t;

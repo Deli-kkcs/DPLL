@@ -27,6 +27,9 @@
     <ClInclude Include="Stack.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="HaniddokuC.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CNF_Reader.c">
@@ -39,6 +42,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Stack.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HaniddokuC.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

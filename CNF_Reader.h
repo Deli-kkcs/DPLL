@@ -1,5 +1,6 @@
 void MyGetString(char t[10]);
-char MyGetChar();
+void MyGetChar(char* f_char);
+void MyGetInt(int* f_int);
 char GetLine_Exclude_C();
 int Change_string_to_int(char t[10]);
 struct ValueNode* CreateNewValueNode(bool isNegative, int index_value, int index_clause);

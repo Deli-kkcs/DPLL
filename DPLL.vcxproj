@@ -129,11 +129,13 @@
   <ItemGroup>
     <ClInclude Include="CNF_Reader.h" />
     <ClInclude Include="Definition.h" />
+    <ClInclude Include="HaniddokuC.h" />
     <ClInclude Include="Solver.h" />
     <ClInclude Include="Stack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CNF_Reader.c" />
+    <ClCompile Include="HaniddokuC.c" />
     <ClCompile Include="MAIN.c" />
     <ClCompile Include="Solver.c" />
     <ClCompile Include="Stack.c" />

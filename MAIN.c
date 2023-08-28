@@ -2,18 +2,22 @@
 #include"CNF_Reader.h"
 #include"Solver.h"
 #include"Stack.h"
+#include"HaniddokuC.h"
 //extern int count_value, count_clause;
 int main()
 {
+	strcpy(position_InPut_CNF, "E:\\U\\DPLL\\OutPut_Sodoku.txt");
+	strcpy(position_InPut_Sodoku, "E:\\U\\DPLL\\InPut_Sodoku.txt");
+	strcpy(position_OutPut_Sodoku_CNF, "E:\\U\\DPLL\\OutPut_Sodoku.txt");
+
+	Convert_Sodoku_to_CNF();
+	
 	bool isCheckValue = false;
 	//bool isCheckValue = true;
-
 	clock_t start, end;
-
+	fp_InPut_CNF = fopen(position_InPut_CNF, "r");
 	ReadCNF(GetLine_Exclude_C());
-	
 	start = clock();
-	
 	if (isCheckValue)
 	{
 		ReadValue();
@@ -28,6 +32,7 @@ int main()
 	}
 	end = clock();
 	printf("time = %f s\n", (double)(end - start) / CLK_TCK);
+	
 	return 0;
 }
 /*

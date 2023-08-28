@@ -3,13 +3,21 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define max_count_value 10001
 #define max_count_clause 150001
+#define N 9
 #include<stdio.h>
 #include<stdbool.h>
 #include<stdlib.h>
 #include<string.h>
 #include<time.h>
+#include<math.h>
 int count_value, count_clause , count_solution , count_active_Value,index_lastSelected;
-FILE* fp;
+FILE* fp_InPut_CNF;
+FILE* fp_InPut_Sodoku;
+FILE* fp_OutPut_Selection;
+FILE* fp_OutPut_CNF_of_Sodoku;
+char position_InPut_CNF[1000];
+char position_InPut_Sodoku[1000];
+char position_OutPut_Sodoku_CNF[1000];
 struct CountAppear
 {
 	int m_count;

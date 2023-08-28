@@ -84,12 +84,17 @@ void GetSingleValue_in_value(int* f_index_value, int** f_isTrue)
 void ChooseValue(int* f_index_value,int* f_isTrue)
 {
 	//first in valuesHead
+
+
 	/*
 	*f_index_value = valuesHeadHead.nextValueHead->m_value;
 	*f_isTrue = 0;
 	*/
+
+
 	//randomly in sorted_valueAppear
-	
+
+	/*
 	int a;
 	srand((unsigned)time(NULL));
 	int init_divided = count_clause / count_value;
@@ -109,7 +114,8 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 	*f_index_value = sorted_count_valueAppear[count_value - a].m_index_value;
 	
 	*f_isTrue = 0;
-	
+	*/
+
 	//in clause that has a length of 2
 	/*
 	int max_value_appear_2 = -1;
@@ -147,7 +153,9 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 		*f_index_value = max_index_value;
 	}*/
 	//in sorted_count_valuePoN
-	/*
+
+
+	
 	if (sorted_count_N[count_value].m_count_nega >= sorted_count_P[count_value].m_count_posi)
 	{
 		*f_isTrue = -1;
@@ -158,7 +166,7 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 		*f_isTrue = 1;
 		*f_index_value = sorted_count_P[count_value].m_index_value;
 	}
-	*/
+	
 	
 	
 	
@@ -198,16 +206,16 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 		*f_index_value = index_max_posi_appear;
 		*f_isTrue = 1;
 	}*/
-	if (!fp)
+	if (!fp_OutPut_Selection)
 	{
-		fp = fopen("E:\\U\\DPLL\\OutPut.txt", "w");
+		fp_OutPut_Selection = fopen("E:\\U\\DPLL\\OutPut.txt", "w");
 	}
-	fprintf(fp, "**** %d-", *f_index_value);
+	fprintf(fp_OutPut_Selection, "**** %d-", *f_index_value);
 	if (*f_isTrue == 1)
-		fprintf(fp, "TRUE");
+		fprintf(fp_OutPut_Selection, "TRUE");
 	if (*f_isTrue == -1)
-		fprintf(fp, "FALSE");
-	fprintf(fp, "\n");
+		fprintf(fp_OutPut_Selection, "FALSE");
+	fprintf(fp_OutPut_Selection, "\n");
 	
 	if (index_lastSelected == *f_index_value)
 	{
