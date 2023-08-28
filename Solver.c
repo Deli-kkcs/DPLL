@@ -89,7 +89,7 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 	*f_isTrue = 0;
 	*/
 	//randomly in sorted_valueAppear
-	/*
+	
 	int a;
 	srand((unsigned)time(NULL));
 	int init_divided = count_clause / count_value;
@@ -109,7 +109,7 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 	*f_index_value = sorted_count_valueAppear[count_value - a].m_index_value;
 	
 	*f_isTrue = 0;
-	*/
+	
 	//in clause that has a length of 2
 	/*
 	int max_value_appear_2 = -1;
@@ -147,7 +147,7 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 		*f_index_value = max_index_value;
 	}*/
 	//in sorted_count_valuePoN
-	
+	/*
 	if (sorted_count_N[count_value].m_count_nega >= sorted_count_P[count_value].m_count_posi)
 	{
 		*f_isTrue = -1;
@@ -158,7 +158,7 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 		*f_isTrue = 1;
 		*f_index_value = sorted_count_P[count_value].m_index_value;
 	}
-	
+	*/
 	
 	
 	

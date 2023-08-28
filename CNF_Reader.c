@@ -9,6 +9,10 @@ char MyGetChar()
 {
 	return getchar();
 }
+void MyGetInt(int *f_int)
+{
+	scanf("%d", f_int);
+}
 char GetLine_Exclude_C()
 {
 	char t = '0';
@@ -345,10 +349,13 @@ void ReadCNF(char t)
 	if (t != 'p')
 		return;
 	char str[10] = "";
-	scanf("%s", str);
+	MyGetString(str);
+	//scanf("%s", str);
 	if (str[0] != 'c')
 		return;
-	scanf("%d%d", &count_value, &count_clause);
+	MyGetInt(&count_value);
+	MyGetInt(&count_clause);
+	//scanf("%d%d", &count_value, &count_clause);
 	count_active_Value = count_value;
 	index_lastSelected = -1;
 	/*values = malloc(sizeof(struct ValueHeadNode) * (count_value + 1));
