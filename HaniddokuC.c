@@ -1,6 +1,7 @@
 #include"Definition.h"
 #include "HaniddokuC.h"
-int count_1 = 0, count_num = 0;
+int count_1 = 0, count_num = 0,index_num = 0;
+char temp[100];
 void OutPut_Initialize()
 {
 	int nums_in_line[10];
@@ -161,17 +162,46 @@ int CollectLine(int index_direction, int index_line, int x, int y)
 	}
 	return -1;
 }
-void MyGetchar(int x, int y)//getchar读取单个数字
+void MyGetchar_Try(int x, int y)//getchar读取单个数字
 {
-	char t;
-	fscanf(fp_InPut_Sodoku, "%c", &t);
-	if (t == '0')
+	fscanf(fp_InPut_Sodoku, "%c", &temp[index_num]);
+	if (temp[index_num] == '0')
 		return;
 	count_num++;
-	OutPut_SingleGrid_while_Input(x, y, (int)t - '0');
+}
+void MyGetchar(int x, int y)//getchar读取单个数字
+{
+	if (temp[index_num] == '0')
+		return;
+	OutPut_SingleGrid_while_Input(x, y, (int)temp[index_num] - '0');
+}
+void TryInPutNum()
+{
+	index_num = 0;
+	int shortest = N / 2 + 1;//最短边的长度 N = 9  =>  shortest = 5
+	for (int line = 1; line <= N; line++)
+	{
+		int column = 1;
+		if (line <= shortest)
+		{
+			column = shortest - line + 1;
+			for (; column <= N; column++)
+			{
+				MyGetchar_Try(line, column);
+				index_num++;
+			}
+			continue;
+		}
+		for (; column <= N - (line - shortest); column++)
+		{
+			MyGetchar_Try(line, column);
+			index_num++;
+		}
+	}
 }
 void InputNum()
 {
+	index_num = 0;
 	int shortest = N / 2 + 1;//最短边的长度 N = 9  =>  shortest = 5
 	for (int line = 1; line <= N; line++)
 	{
@@ -182,21 +212,25 @@ void InputNum()
 			for (; column <= N; column++)
 			{
 				MyGetchar(line, column);
+				index_num++;
 			}
 			continue;
 		}
 		for (; column <= N - (line - shortest); column++)
 		{
 			MyGetchar(line, column);
+			index_num++;
 		}
 	}
 }
+
 void Convert_Sodoku_to_CNF()
 {
 	fp_InPut_Sodoku = fopen(position_InPut_Sodoku, "r");
 	fp_OutPut_CNF_of_Sodoku = fopen(position_OutPut_Sodoku_CNF, "w");
-	fprintf(fp_OutPut_CNF_of_Sodoku, "p cnf 1000 10607\n");//10597+n
-	
+	strcpy(temp, "");
+	TryInPutNum();
+	fprintf(fp_OutPut_CNF_of_Sodoku, "p cnf 1000 %d\n", 10597+count_num);//10597+n
 	OutPut_Initialize();
 	InputNum();
 	//printf("%d", count_1);

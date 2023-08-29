@@ -360,7 +360,7 @@ void ReadCNF(char t)
 	MyGetInt(&count_clause);
 	//scanf("%d%d", &count_value, &count_clause);
 	count_active_Value = count_value;
-	index_lastSelected = -1;
+	index_lastSelected = 0;
 	/*values = malloc(sizeof(struct ValueHeadNode) * (count_value + 1));
 	if (!values)
 		return;
@@ -388,6 +388,7 @@ void ReadCNF(char t)
 		sorted_count_valueAppear[i].m_index_sorted = -9999;
 
 		valuesHead[i].m_truth = 0;
+		valuesHead[i].m_weight = 200;
 		valuesHead[i].nextValue_in_value = NULL;
 		//valuesHead[i].valueSpeciallyInValueHead = NULL;
 		//valuesHead[i].latestValue_in_value = valuesHead[i].valueSpeciallyInValueHead;

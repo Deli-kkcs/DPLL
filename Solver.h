@@ -1,6 +1,7 @@
 bool XOR(bool A, int B);
 void GetSingleValue_in_clause(int* f_index_value, int** f_isTrue);
 void GetSingleValue_in_value(int* f_index_value, int** f_isTrue);
+void GetPureValue(int* f_index_value, int** f_isTrue);
 void ChooseValue(int* f_index_value,int* f_isTrue);
 void RemoveValue_in_clause(struct Stack_Value** f_stack_RemovedValue, struct ValueNode* removed_value);
 void RemoveValue_in_value(struct Stack_ValueHead** f_stack_RemovedValueHead, struct ValueNode* removed_value);

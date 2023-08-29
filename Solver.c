@@ -80,41 +80,248 @@ void GetSingleValue_in_value(int* f_index_value, int** f_isTrue)
 	*f_isTrue = NULL;
 	return;
 }
-
+void GetPureValue(int* f_index_value, int** f_isTrue)
+{
+	struct ValueHeadNode* this_valueHead = valuesHeadHead.nextValueHead;
+	while (this_valueHead)
+	{
+		int truth_first = 0;
+		bool isPure = false;
+		struct ValueNode* this_value = this_valueHead->nextValue_in_value;
+		while (this_value)
+		{
+			if (truth_first == 0)
+			{
+				isPure = true;
+				truth_first = this_value->isNegative ? 1 : -1;
+			}
+			else if (truth_first != this_value->isNegative)
+			{
+				isPure = false;
+				break;
+			}
+			this_value = this_value->nextValue_in_value;
+		}
+		if (isPure)
+		{
+			**f_isTrue = truth_first;
+			*f_index_value =  this_valueHead->m_value;
+			return;
+		}
+		this_valueHead = this_valueHead->nextValueHead;
+	}
+	*f_isTrue = NULL;
+}
 void ChooseValue(int* f_index_value,int* f_isTrue)
 {
-	//first in valuesHead
-
-
-	/*
-	*f_index_value = valuesHeadHead.nextValueHead->m_value;
-	*f_isTrue = 0;
-	*/
-
-
-	//randomly in sorted_valueAppear
-
-	/*
-	int a;
-	srand((unsigned)time(NULL));
-	int init_divided = count_clause / count_value;
-	//int mod = count_active_Value;
-	int mod = count_active_Value / init_divided;
-	while (mod == 0)
+	switch (selection_strategy)
 	{
-		init_divided /= 2;
-		if (init_divided == 0)
+		case 0://first in valuesHead
 		{
-			mod = count_active_Value;
+			*f_index_value = valuesHeadHead.nextValueHead->m_value;
+			*f_isTrue = 0;
 			break;
 		}
-		mod = count_active_Value / init_divided;
+		case 1://random in most common value
+		{
+			int a = 0;
+			srand((unsigned)time(NULL));
+			int init_divided = /*count_clause / count_value*/8;
+			//int mod = count_active_Value;
+			int mod = count_active_Value / init_divided;
+			if (count_active_Value < 8)
+				mod = count_active_Value;
+			/*while (mod == 0)
+			{
+				init_divided /= 2;
+				if (init_divided == 0)
+				{
+					mod = count_active_Value;
+					break;
+				}
+				mod = count_active_Value / init_divided;
+			}*/
+			a = rand() % (mod);
+			* f_index_value = sorted_count_valueAppear[count_value - a].m_index_value;
+			*f_isTrue = 0;
+			break;
+		}
+		case 2://most common value
+		{
+			*f_index_value = sorted_count_valueAppear[count_value].m_index_value;
+			*f_isTrue = 0;
+			break;
+		}
+		case 3://most common posi|nega
+		{
+			if (sorted_count_N[count_value].m_count_nega >= sorted_count_P[count_value].m_count_posi)
+			{
+				*f_isTrue = -1;
+				*f_index_value = sorted_count_N[count_value].m_index_value;
+			}
+			else
+			{
+				*f_isTrue = 1;
+				*f_index_value = sorted_count_P[count_value].m_index_value;
+			}
+			break;
+		}
+		case 4 :case 5://largest weight : +=3 after revert
+		{
+			double max_weight = -2100000000;
+			int index_max_weight = 0;
+			int count_posi = 0, count_nega = 0;
+			struct ValueHeadNode* this_valueHead = valuesHeadHead.nextValueHead;
+			while (this_valueHead)
+			{
+				if (this_valueHead->m_weight > max_weight)
+				{
+					max_weight = this_valueHead->m_weight;
+					index_max_weight = this_valueHead->m_value;
+				}
+				this_valueHead = this_valueHead->nextValueHead;
+			}
+			
+			//*f_isTrue = 0;
+			if (sorted_count_N[count_N[index_max_weight].m_index_sorted].m_count_nega > sorted_count_P[count_P[index_max_weight].m_index_sorted].m_count_posi)
+			{
+				*f_isTrue = -1;
+			}
+			else
+			{
+				*f_isTrue = 1;
+			}
+			*f_index_value = index_max_weight;
+			break;
+		}
+		case 6://smallest weight : +=3 after revert
+		{
+			double max_weight = 2100000000;
+			int index_max_weight = 0;
+			int count_posi = 0, count_nega = 0;
+			struct ValueHeadNode* this_valueHead = valuesHeadHead.nextValueHead;
+			while (this_valueHead)
+			{
+				if (this_valueHead->m_weight < max_weight)
+				{
+					max_weight = this_valueHead->m_weight;
+					index_max_weight = this_valueHead->m_value;
+				}
+				this_valueHead = this_valueHead->nextValueHead;
+			}
+
+			//*f_isTrue = 0;
+			if (sorted_count_N[count_N[index_max_weight].m_index_sorted].m_count_nega > sorted_count_P[count_P[index_max_weight].m_index_sorted].m_count_posi)
+			{
+				*f_isTrue = -1;
+			}
+			else
+			{
+				*f_isTrue = 1;
+			}
+			*f_index_value = index_max_weight;
+			break;
+		}
+		case 7://largest weight : BIG σ of pow(0.5 , length_clause-1)
+		{
+			double max_weihgt = -1;
+			int index_max_weight = -1;
+			int isTrue_while_max = 0;
+			struct ValueHeadNode* this_valueHead = valuesHeadHead.nextValueHead;
+			while (this_valueHead)
+			{
+				int temp_isTrue_while_max;
+				int count_appear = sorted_count_valueAppear[count_valueAppear[this_valueHead->m_value].m_index_sorted].m_count;
+				for (int i = 0; i <= 1; i++)
+				{
+					if (i == 0)
+					{
+						temp_isTrue_while_max = 1;
+					}
+					else
+					{
+						temp_isTrue_while_max = -1;
+					}
+					double weight_this_value = 0;
+					struct ValueNode* this_Value_in_value = this_valueHead->nextValue_in_value;
+					while (this_Value_in_value)
+					{
+						if (!XOR(this_Value_in_value->isNegative, temp_isTrue_while_max))
+						{
+							this_Value_in_value = this_Value_in_value->nextValue_in_value;
+							continue;
+						}
+						int length_clause = 0;
+						struct ValueNode* this_Value_in_clause = clausesHead[this_Value_in_value->index_clause].nextValue_in_clause;
+						while (this_Value_in_clause)
+						{
+							length_clause++;
+							this_Value_in_clause = this_Value_in_clause->nextValue_in_clause;
+						}
+						weight_this_value += pow(0.5, length_clause - 1);
+						this_Value_in_value = this_Value_in_value->nextValue_in_value;
+					}
+					//weight_this_value *= pow(1, count_appear);
+					if (weight_this_value > max_weihgt)
+					{
+						max_weihgt = weight_this_value;
+						index_max_weight = this_valueHead->m_value;
+						isTrue_while_max = temp_isTrue_while_max;
+					}
+				}
+
+				this_valueHead = this_valueHead->nextValueHead;
+			}
+			*f_isTrue = isTrue_while_max;
+			*f_index_value = index_max_weight;
+			break;
+		}
+		case 8://(posi + 1)*(nega + 1) in 2-length clause
+		{
+			long int max_weihgt = -1;
+			int index_max_weight = -1;
+			struct ValueHeadNode* this_valueHead = valuesHeadHead.nextValueHead;
+			while (this_valueHead)
+			{
+				int count_posi = 0, count_nega = 0;
+				long int weight_this_value = 0;
+				struct ValueNode* this_Value_in_value = this_valueHead->nextValue_in_value;
+				while (this_Value_in_value)
+				{
+					if (clausesHead[this_Value_in_value->m_value].count_activeValue > 3)
+					{
+						this_Value_in_value = this_Value_in_value->nextValue_in_value;
+						continue;
+					}
+					if (this_Value_in_value->isNegative)
+						count_nega++;
+					else
+					{
+						count_posi++;
+					}
+					this_Value_in_value = this_Value_in_value->nextValue_in_value;
+				}
+				weight_this_value = (count_nega +1) *(count_posi +1) ;
+				//weight_this_value *= pow(1, count_appear);
+				if (weight_this_value > max_weihgt)
+				{
+					max_weihgt = weight_this_value;
+					index_max_weight = this_valueHead->m_value;
+				}
+				this_valueHead = this_valueHead->nextValueHead;
+			}
+			*f_isTrue = 0;
+			*f_index_value = index_max_weight;
+			break;
+		}
+		
+		
 	}
-	a = rand() % (mod);
-	*f_index_value = sorted_count_valueAppear[count_value - a].m_index_value;
 	
-	*f_isTrue = 0;
-	*/
+	
+
+	
+	
 
 	//in clause that has a length of 2
 	/*
@@ -152,60 +359,7 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 	{
 		*f_index_value = max_index_value;
 	}*/
-	//in sorted_count_valuePoN
 
-
-	
-	if (sorted_count_N[count_value].m_count_nega >= sorted_count_P[count_value].m_count_posi)
-	{
-		*f_isTrue = -1;
-		*f_index_value = sorted_count_N[count_value].m_index_value;
-	}
-	else
-	{
-		*f_isTrue = 1;
-		*f_index_value = sorted_count_P[count_value].m_index_value;
-	}
-	
-	
-	
-	
-	
-
-	// to set f_isTrue !!
-	
-	
-	/*struct ClauseHeadNode* this_clauseHead = clausesHeadHead.nextClauseHead;
-	while (this_clauseHead)
-	{
-		struct ValueNode* this_value = this_clauseHead->nextValue_in_clause;
-		while (this_value)
-		{
-			this_value->isNegative ? count_P[this_value->m_value].count_nega++ : count_P[this_value->m_value].count_posi++;
-			if (count_P[this_value->m_value].count_nega > max_nega_appear)
-			{
-				max_nega_appear = count_P[this_value->m_value].count_nega;
-				index_max_nega_appear = this_value->m_value;
-			}
-			if (count_P[this_value->m_value].count_posi > max_posi_appear)
-			{
-				max_posi_appear = count_P[this_value->m_value].count_posi;
-				index_max_posi_appear = this_value->m_value;
-			}
-			this_value = this_value->nextValue_in_clause;
-		}
-		this_clauseHead = this_clauseHead->nextClauseHead;
-	}
-	if (max_nega_appear >= max_posi_appear)
-	{
-		*f_index_value = index_max_nega_appear;
-		*f_isTrue = -1;
-	}
-	else
-	{
-		*f_index_value = index_max_posi_appear;
-		*f_isTrue = 1;
-	}*/
 	if (!fp_OutPut_Selection)
 	{
 		fp_OutPut_Selection = fopen("E:\\U\\DPLL\\OutPut.txt", "w");
@@ -219,16 +373,10 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 	
 	if (index_lastSelected == *f_index_value)
 	{
-		//if (*f_index_value == 12)
-		{
-			printf(".");
-		}
-		/*
-		ChooseValue(f_index_value, f_isTrue);
-		return;*/
+		valuesHead[index_lastSelected].m_weight += 2;
+		printf(".");
 	}
 	index_lastSelected = *f_index_value;
-	
 }
 void RemoveValue_in_clause(struct Stack_Value** f_stack_RemovedValue, struct ValueNode* removed_value)
 {
@@ -242,12 +390,8 @@ void RemoveValue_in_clause(struct Stack_Value** f_stack_RemovedValue, struct Val
 	if (removed_value->nextValue_in_clause)
 		removed_value->nextValue_in_clause->preValue_in_clause = removed_value->preValue_in_clause;
 	//不删除句子头结点
-	/*removedClauseHead->nextValue_in_clause = removedClauseHead->nextValue_in_clause->nextValue_in_clause;
-	if (removedClauseHead->nextValue_in_clause)
-		removedClauseHead->nextValue_in_clause->preValue_in_clause = NULL;*/
 	MyPush(f_stack_RemovedValue, removed_value);
 	clausesHead[removed_value->index_clause].count_activeValue--;
-	//return f_stack_RemovedValue;
 }
 void RemoveValue_in_value(struct Stack_ValueHead** f_stack_RemovedValueHead, struct ValueNode* removed_value)
 {
@@ -264,11 +408,6 @@ void RemoveValue_in_value(struct Stack_ValueHead** f_stack_RemovedValueHead, str
 	if (!may_removedValueHead->latestValue_in_value)//句子中这个节点是变量的唯一一次出现
 	{
 		RemoveValueHead(f_stack_RemovedValueHead, may_removedValueHead);
-		/*if (may_removedValueHead->preValueHead)
-			may_removedValueHead->preValueHead->nextValueHead = may_removedValueHead->nextValueHead;
-		if (may_removedValueHead->nextValueHead)
-			may_removedValueHead->nextValueHead->preValueHead = may_removedValueHead->preValueHead;
-		MyPush_3(f_stack_RemovedValueHead, may_removedValueHead);*/
 	}
 	MinusCountAppear(removed_value->m_value);
 	MinusCountPoN(removed_value->m_value, removed_value->isNegative);
@@ -316,7 +455,7 @@ void SetValue
 		RemoveValueHead(f_stack_RemovedValueHead, &valuesHead[*f_index_value]);
 		return;
 	}
-	
+	valuesHead[*f_index_value].m_weight += 1;
 	while (this_value)//遍历这个参数出现的每一个位置
 	{
 		bool is_true_here = XOR(this_value->isNegative, *f_isTrue);
@@ -362,6 +501,7 @@ bool CheckEmptyClause()
 	}
 	return false;
 }
+
 void RevertChange
 (
 	struct Stack_Value** f_stack_RemovedValue, 
@@ -419,6 +559,14 @@ void RevertChange
 		AddCountAppear(back_value->m_value);
 		AddCountPoN(back_value->m_value, back_value->isNegative);
 		clausesHead[back_value->index_clause].count_activeValue++;
+		if (selection_strategy == 5)
+		{
+			valuesHead[back_value->m_value].m_weight *= 0.9;
+		}
+		else
+		{
+			valuesHead[back_value->m_value].m_weight += 3;
+		}
 		/*if (!valuesHead[back_value->m_value].nextValue_in_value)
 		{
 			valuesHead[back_value->m_value].nextValue_in_value = back_value;
@@ -451,29 +599,31 @@ bool DPLL()
 			break;
 		SetValue(index_value_p, isTrue, &stack_RemovedValue , &stack_RemovedClauseHead, &stack_RemovedValueHead);
 	}
-	//{
-		//if (CheckEmptyCNF())//没有句子
-		//{
-		//	MyPrintResult();
-		//	RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
-		//	return true;
-		//}
-		//if (CheckEmptyClause())//有空句子
-		//{
-		//	RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
-		//	return false;
-		//}
-	//}
 	if (!isTrue)
 	{
 		isTrue = (int*)malloc(sizeof(int));
-	}	
+	}
 	while (1)
 	{
 		GetSingleValue_in_value(index_value_p, &isTrue);
 		if (!isTrue)
 			break;
 		SetValue(index_value_p, isTrue, &stack_RemovedValue , &stack_RemovedClauseHead, &stack_RemovedValueHead);
+	}
+	if (!isTrue)
+	{
+		isTrue = (int*)malloc(sizeof(int));
+	}
+	while (1)
+	{
+		GetPureValue(index_value_p, &isTrue);
+		if (!isTrue)
+			break;
+		SetValue(index_value_p, isTrue, &stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
+	}
+	if (!isTrue)
+	{
+		isTrue = (int*)malloc(sizeof(int));
 	}
 	{
 		if (CheckEmptyCNF())//没有句子
@@ -488,10 +638,7 @@ bool DPLL()
 			return false;
 		}
 	}
-	if (!isTrue)
-	{
-		isTrue = (int*)malloc(sizeof(int));
-	}
+	
 
 	bool state = false;
 	ChooseValue(index_value_p, isTrue);

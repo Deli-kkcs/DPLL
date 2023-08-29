@@ -11,6 +11,7 @@
 #include<time.h>
 #include<math.h>
 int count_value, count_clause , count_solution , count_active_Value,index_lastSelected;
+int selection_strategy;
 FILE* fp_InPut_CNF;
 FILE* fp_InPut_Sodoku;
 FILE* fp_OutPut_Selection;
@@ -36,6 +37,7 @@ struct ValueNode
 {
 	int m_value;									//变量名
 	int index_clause;								//所属句子序号
+
 	bool isNegative;								//是否要取非
 	struct ValueNode* nextValue_in_clause;			//子句中下一个变量
 	struct ValueNode* preValue_in_clause;			//子句中上一个变量
@@ -47,6 +49,7 @@ struct ValueHeadNode
 {
 	int m_value;									//变量名
 	int m_truth;									//取值是否为真
+	double m_weight;									//变量权重,初始0,每被选一次+1
 	struct ValueNode* latestValue_in_value;			//该变量最后一次出现的位置
 
 	//struct ValueNode* valueSpeciallyInValueHead;	//变量头结点特有的变量节点类型
