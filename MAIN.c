@@ -6,11 +6,11 @@
 //extern int count_value, count_clause;
 int main()
 {
-	selection_strategy = 0;
-	//strcpy(position_InPut_CNF, "E:\\U\\DPLL\\Check\\3.cnf");//4£¨unsatisfied£©
+	selection_strategy = 1;
+	strcpy(position_InPut_CNF, "E:\\U\\DPLL\\Check\\5.cnf");//4£¨unsatisfied£©
 	//strcpy(position_InPut_CNF, "E:\\U\\DPLL\\Test\\Âú×ãËãÀý\\M\\TEST.txt");
 	//strcpy(position_InPut_CNF, "E:\\U\\DPLL\\Test\\Âú×ãËãÀý\\S\\7cnf20_90000_90000_7.shuffled-20.cnf");
-	strcpy(position_InPut_CNF, "E:\\U\\DPLL\\OutPut_Sodoku_CNF.txt");
+	//strcpy(position_InPut_CNF, "E:\\U\\DPLL\\OutPut_Sodoku_CNF.txt");
 	strcpy(position_InPut_Sodoku, "E:\\U\\DPLL\\InPut_Sodoku.txt");
 	strcpy(position_OutPut_Sodoku, "E:\\U\\DPLL\\OutPut_Sodoku.txt");
 	strcpy(position_OutPut_Sodoku_CNF, "E:\\U\\DPLL\\OutPut_Sodoku_CNF.txt");
@@ -40,7 +40,7 @@ int main()
 		printf("time = %.0f ms\n", (double)(end - start) /*/ CLK_TCK*/);
 	}
 	
-	system("pause");
+	//system("pause");
 	return 0;
 }
 /*
