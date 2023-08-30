@@ -8,3 +8,4 @@ void MyGetchar_Try(int x, int y);
 void TryInPutNum();
 void InputNum();
 void Convert_Sodoku_to_CNF();
+void Convert_CNF_to_Sodoku();

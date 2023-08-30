@@ -238,3 +238,21 @@ void Convert_Sodoku_to_CNF()
 	fclose(fp_OutPut_CNF_of_Sodoku);
 
 }
+
+void Convert_CNF_to_Sodoku()
+{
+	fp_OutPut_Sodoku = fopen(position_OutPut_Sodoku, "w");
+	int accumulate = 0;
+	for (int i = 150; i <= 960; i++)
+	{
+		if (valuesHead[i].m_truth == 0)
+		{
+			accumulate = 0;
+			continue;
+		}
+		accumulate++;
+		if (valuesHead[i].m_truth == 1)
+			fprintf(fp_OutPut_Sodoku, "%d", accumulate);
+	}
+	fclose(fp_OutPut_Sodoku);
+}

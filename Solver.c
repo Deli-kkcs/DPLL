@@ -2,6 +2,7 @@
 #include"Solver.h"
 #include"Stack.h"
 #include"CNF_Reader.h"
+#include"HaniddokuC.h"
 //extern int count_value, count_clause;
 bool XOR(bool A, int B)
 {
@@ -166,7 +167,7 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 			}
 			break;
 		}
-		case 4 :case 5://largest weight : +=3 after revert
+		case 4 :case 5://largest weight : +=3|*0.9 after revert
 		{
 			double max_weight = -2100000000;
 			int index_max_weight = 0;
@@ -280,6 +281,14 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 		{
 			long int max_weihgt = -1;
 			int index_max_weight = -1;
+			int min_length_clause = 2100000000;
+			struct ClauseHeadNode* this_clauseHead = clausesHeadHead.nextClauseHead;
+			while (this_clauseHead)
+			{
+				if (this_clauseHead->count_activeValue < min_length_clause)
+					min_length_clause = this_clauseHead->count_activeValue;
+				this_clauseHead = this_clauseHead->nextClauseHead;
+			}
 			struct ValueHeadNode* this_valueHead = valuesHeadHead.nextValueHead;
 			while (this_valueHead)
 			{
@@ -288,7 +297,7 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 				struct ValueNode* this_Value_in_value = this_valueHead->nextValue_in_value;
 				while (this_Value_in_value)
 				{
-					if (clausesHead[this_Value_in_value->m_value].count_activeValue > 3)
+					if (clausesHead[this_Value_in_value->m_value].count_activeValue != /*min_length_clause*/2)
 					{
 						this_Value_in_value = this_Value_in_value->nextValue_in_value;
 						continue;
@@ -296,9 +305,7 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 					if (this_Value_in_value->isNegative)
 						count_nega++;
 					else
-					{
 						count_posi++;
-					}
 					this_Value_in_value = this_Value_in_value->nextValue_in_value;
 				}
 				weight_this_value = (count_nega +1) *(count_posi +1) ;
@@ -307,10 +314,14 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 				{
 					max_weihgt = weight_this_value;
 					index_max_weight = this_valueHead->m_value;
+					/*if(count_nega > count_posi)
+						*f_isTrue = 1;
+					else
+						*f_isTrue = -1;*/
 				}
 				this_valueHead = this_valueHead->nextValueHead;
 			}
-			*f_isTrue = 0;
+			
 			*f_index_value = index_max_weight;
 			break;
 		}
@@ -584,6 +595,7 @@ void MyPrintResult()
 		printf("%d ", valuesHead[i].m_truth);
 	}
 	printf("\n");
+	Convert_CNF_to_Sodoku();
 }
 bool DPLL()
 {
