@@ -1,3 +1,7 @@
+.\verify.exe .\4（unsatisfied）.cnf .\4（unsatisfied）.res
+.\verify.exe .\5.cnf .\5.res
+.\verify.exe .\6.cnf .\6.res
+
 有关压缩包的说明：
 
 关于设计题一检查要求

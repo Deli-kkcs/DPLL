@@ -3,13 +3,14 @@
 #include"Stack.h"
 #include"CNF_Reader.h"
 #include"HaniddokuC.h"
-//extern int count_value, count_clause;
+//异或:变量有负号 和 变量赋值为负  只有一个为真时返回假
 bool XOR(bool A, int B)
 {
 	if ((A && (B == 1)) || (!A && (B == -1)))
 		return false;
 	return true;
 }
+//获取只有一个变量的子句
 void GetSingleValue_in_clause(int * f_index_value , int** f_isTrue)
 {
 	struct ClauseHeadNode* this_clauseHead = clausesHeadHead.nextClauseHead;
@@ -45,6 +46,7 @@ void GetSingleValue_in_clause(int * f_index_value , int** f_isTrue)
 	*f_isTrue = NULL;
 	return;
 }
+//获取只出现过一次的变量
 void GetSingleValue_in_value(int* f_index_value, int** f_isTrue)
 {
 	struct ValueHeadNode* this_ValueHead = valuesHeadHead.nextValueHead;
@@ -81,6 +83,7 @@ void GetSingleValue_in_value(int* f_index_value, int** f_isTrue)
 	*f_isTrue = NULL;
 	return;
 }
+//获取出现时全部为正或负的纯文字
 void GetPureValue(int* f_index_value, int** f_isTrue)
 {
 	struct ValueHeadNode* this_valueHead = valuesHeadHead.nextValueHead;
@@ -89,14 +92,14 @@ void GetPureValue(int* f_index_value, int** f_isTrue)
 		int truth_first = 0;
 		bool isPure = false;
 		struct ValueNode* this_value = this_valueHead->nextValue_in_value;
-		while (this_value)
+		while (this_value)//遍历每一个变量出现的位置
 		{
-			if (truth_first == 0)
+			if (truth_first == 0)//首次出现时更新首次出现的值
 			{
 				isPure = true;
 				truth_first = this_value->isNegative ? 1 : -1;
 			}
-			else if (truth_first != this_value->isNegative)
+			else if (truth_first != this_value->isNegative)//不是纯文字跳出内循环,遍历下一个变量
 			{
 				isPure = false;
 				break;
@@ -113,6 +116,7 @@ void GetPureValue(int* f_index_value, int** f_isTrue)
 	}
 	*f_isTrue = NULL;
 }
+//迫不得已地选择下一个变量 9种策略
 void ChooseValue(int* f_index_value,int* f_isTrue)
 {
 	switch (selection_strategy)
@@ -210,8 +214,6 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 				}
 				this_valueHead = this_valueHead->nextValueHead;
 			}
-
-			//*f_isTrue = 0;
 			if (sorted_count_N[count_N[index_max_weight].m_index_sorted].m_count_nega > sorted_count_P[count_P[index_max_weight].m_index_sorted].m_count_posi)
 			{
 				*f_isTrue = -1;
@@ -223,7 +225,7 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 			*f_index_value = index_max_weight;
 			break;
 		}
-		case 7://largest weight : BIG σ of pow(0.5 , length_clause-1)
+		case 7://largest weight : summary of pow(0.5 , length_clause-1)
 		{
 			double max_weihgt = -1;
 			int index_max_weight = -1;
@@ -263,12 +265,12 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 						this_Value_in_value = this_Value_in_value->nextValue_in_value;
 					}
 					//weight_this_value *= pow(1, count_appear);
-					if (weight_this_value > max_weihgt)
-					{
-						max_weihgt = weight_this_value;
-						index_max_weight = this_valueHead->m_value;
-						isTrue_while_max = temp_isTrue_while_max;
-					}
+if (weight_this_value > max_weihgt)
+{
+	max_weihgt = weight_this_value;
+	index_max_weight = this_valueHead->m_value;
+	isTrue_while_max = temp_isTrue_while_max;
+}
 				}
 
 				this_valueHead = this_valueHead->nextValueHead;
@@ -308,7 +310,7 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 						count_posi++;
 					this_Value_in_value = this_Value_in_value->nextValue_in_value;
 				}
-				weight_this_value = (count_nega +1) *(count_posi +1) ;
+				weight_this_value = (count_nega + 1) * (count_posi + 1);
 				//weight_this_value *= pow(1, count_appear);
 				if (weight_this_value > max_weihgt)
 				{
@@ -321,19 +323,11 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 				}
 				this_valueHead = this_valueHead->nextValueHead;
 			}
-			
+
 			*f_index_value = index_max_weight;
 			break;
 		}
-		
-		
 	}
-	
-	
-
-	
-	
-
 	//in clause that has a length of 2
 	/*
 	int max_value_appear_2 = -1;
@@ -370,18 +364,21 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 	{
 		*f_index_value = max_index_value;
 	}*/
-
-	if (!fp_OutPut_Selection)
+	//将赋值详情输出到txt文件
 	{
-		fp_OutPut_Selection = fopen("E:\\U\\DPLL\\OutPut.txt", "w");
+		if (!fp_OutPut_Selection)
+		{
+			fp_OutPut_Selection = fopen("E:\\U\\DPLL\\OutPut.txt", "w");
+		}
+		fprintf(fp_OutPut_Selection, "**** %d-", *f_index_value);
+		if (*f_isTrue == 1)
+			fprintf(fp_OutPut_Selection, "TRUE");
+		if (*f_isTrue == -1)
+			fprintf(fp_OutPut_Selection, "FALSE");
+		fprintf(fp_OutPut_Selection, "\n");
 	}
-	fprintf(fp_OutPut_Selection, "**** %d-", *f_index_value);
-	if (*f_isTrue == 1)
-		fprintf(fp_OutPut_Selection, "TRUE");
-	if (*f_isTrue == -1)
-		fprintf(fp_OutPut_Selection, "FALSE");
-	fprintf(fp_OutPut_Selection, "\n");
 	
+	//更新最近一次赋值的变量
 	if (index_lastSelected == *f_index_value)
 	{
 		valuesHead[index_lastSelected].m_weight += 2;
@@ -389,33 +386,35 @@ void ChooseValue(int* f_index_value,int* f_isTrue)
 	}
 	index_lastSelected = *f_index_value;
 }
+//移除子句中的变量
 void RemoveValue_in_clause(struct Stack_Value** f_stack_RemovedValue, struct ValueNode* removed_value)
 {
 	struct ClauseHeadNode* clauseHead_here = &clausesHead[removed_value->index_clause];
-	if (clauseHead_here->latestValue_in_clause == removed_value)
+	if (clauseHead_here->latestValue_in_clause == removed_value)//更新尾节点
 		clauseHead_here->latestValue_in_clause = removed_value->preValue_in_clause;
-	if (clauseHead_here->nextValue_in_clause == removed_value)
+	if (clauseHead_here->nextValue_in_clause == removed_value)//头节点特判
 		clauseHead_here->nextValue_in_clause = clauseHead_here->nextValue_in_clause->nextValue_in_clause;
 	if (removed_value->preValue_in_clause)
 		removed_value->preValue_in_clause->nextValue_in_clause = removed_value->nextValue_in_clause;
 	if (removed_value->nextValue_in_clause)
 		removed_value->nextValue_in_clause->preValue_in_clause = removed_value->preValue_in_clause;
-	//不删除句子头结点
+	//不删除句子头节点
 	MyPush(f_stack_RemovedValue, removed_value);
 	clausesHead[removed_value->index_clause].count_activeValue--;
 }
+//移除变量这一次的出现
 void RemoveValue_in_value(struct Stack_ValueHead** f_stack_RemovedValueHead, struct ValueNode* removed_value)
 {
 	struct ValueHeadNode* may_removedValueHead = &valuesHead[removed_value->m_value];
-	if (may_removedValueHead->latestValue_in_value == removed_value)
+	if (may_removedValueHead->latestValue_in_value == removed_value)//更新尾节点
 		may_removedValueHead->latestValue_in_value = removed_value->preValue_in_value;
-	if (may_removedValueHead->nextValue_in_value == removed_value)
+	if (may_removedValueHead->nextValue_in_value == removed_value)//头节点特判
 		may_removedValueHead->nextValue_in_value = may_removedValueHead->nextValue_in_value->nextValue_in_value;
 ;	if (removed_value->preValue_in_value)
 		removed_value->preValue_in_value->nextValue_in_value = removed_value->nextValue_in_value;
 	if (removed_value->nextValue_in_value)
 		removed_value->nextValue_in_value->preValue_in_value = removed_value->preValue_in_value;
-	//删除变量头结点
+	//删除变量头节点
 	if (!may_removedValueHead->latestValue_in_value)//句子中这个节点是变量的唯一一次出现
 	{
 		RemoveValueHead(f_stack_RemovedValueHead, may_removedValueHead);
@@ -423,6 +422,7 @@ void RemoveValue_in_value(struct Stack_ValueHead** f_stack_RemovedValueHead, str
 	MinusCountAppear(removed_value->m_value);
 	MinusCountPoN(removed_value->m_value, removed_value->isNegative);
 }
+//移除子句头节点
 void RemoveClauseHead(struct Stack_ClauseHead** f_stack_RemovedClauseHead, struct ClauseHeadNode* removed_clauseHead)
 {
 	if (removed_clauseHead->preClauseHead)
@@ -431,6 +431,7 @@ void RemoveClauseHead(struct Stack_ClauseHead** f_stack_RemovedClauseHead, struc
 		removed_clauseHead->nextClauseHead->preClauseHead = removed_clauseHead->preClauseHead;
 	MyPush_2(f_stack_RemovedClauseHead,removed_clauseHead);
 }
+//移除变量头节点
 void RemoveValueHead(struct Stack_ValueHead** f_stack_RemovedValueHead, struct ValueHeadNode* removed_valueHead)
 {
 	if (removed_valueHead->preValueHead)
@@ -444,8 +445,7 @@ void RemoveValueHead(struct Stack_ValueHead** f_stack_RemovedValueHead, struct V
 	MyPush_3(f_stack_RemovedValueHead,removed_valueHead);
 	count_active_Value--;
 }
-
-
+//给变量赋值
 void SetValue
 (
 	int* f_index_value,
@@ -490,6 +490,7 @@ void SetValue
 		this_value = this_value->nextValue_in_value;
 	}
 }
+//检查是否为空cnf,是则已满足
 bool CheckEmptyCNF()
 {
 	if (clausesHeadHead.nextClauseHead)
@@ -498,6 +499,7 @@ bool CheckEmptyCNF()
 	}
 	return true;
 }
+//检查是否有空自己,是则不可满足
 bool CheckEmptyClause()
 {
 	struct ClauseHeadNode* this_clauseHead = clausesHeadHead.nextClauseHead;
@@ -512,7 +514,7 @@ bool CheckEmptyClause()
 	}
 	return false;
 }
-
+//撤销变量的赋值
 void RevertChange
 (
 	struct Stack_Value** f_stack_RemovedValue, 
@@ -586,6 +588,7 @@ void RevertChange
 		back_value = MyPop(f_stack_RemovedValue);
 	}
 }
+//在控制台输出解
 void MyPrintResult()
 {
 	count_solution++;
@@ -597,6 +600,43 @@ void MyPrintResult()
 	printf("\n");
 	Convert_CNF_to_Sodoku();
 }
+//把解输出到同目录同名.res文件
+void WriteRes(int count_solution, double time)
+{
+	if (time == -1 && count_solution != 0)
+	{
+		fprintf(fp_OutPut_Res, "s %d\n", count_solution);
+		fprintf(fp_OutPut_Res, "v ");
+		for (int i = 1; i <= count_value; i++)
+		{
+			if (valuesHead[i].m_truth == 1)
+			{
+				fprintf(fp_OutPut_Res, "%d ", i);
+			}
+			else if(valuesHead[i].m_truth == -1)
+			{
+				fprintf(fp_OutPut_Res, "-%d ", i);
+			}
+			else
+			{
+				fprintf(fp_OutPut_Res, "*%d ", i);
+			}
+		}
+		fprintf(fp_OutPut_Res, "\n");
+	}
+	else if (time != -1 && count_solution != 0)
+	{
+		fprintf(fp_OutPut_Res, "t %d", (int)time);
+	}
+	else if( time != -1 && count_solution == 0)
+	{
+		fprintf(fp_OutPut_Res, "s 0\n");
+		fprintf(fp_OutPut_Res, "v \n");
+		fprintf(fp_OutPut_Res, "t %d", (int)time);
+		return;
+	}
+}
+//DPLL主递归
 bool DPLL()
 {
 	struct Stack_Value* stack_RemovedValue = NULL/*(struct Stack_Value*)malloc(sizeof(struct Stack_Value))*/;
@@ -604,7 +644,7 @@ bool DPLL()
 	struct Stack_ValueHead* stack_RemovedValueHead = NULL/*(struct Stack_ValueHead*)malloc(sizeof(struct Stack_ValueHead))*/;
 	int* index_value_p = (int*)malloc(sizeof(int));
 	int* isTrue = (int*)malloc(sizeof(int));
-	while (1)
+	while (1)//检查单位子句
 	{
 		GetSingleValue_in_clause(index_value_p, &isTrue);
 		if (!isTrue)
@@ -615,7 +655,7 @@ bool DPLL()
 	{
 		isTrue = (int*)malloc(sizeof(int));
 	}
-	while (1)
+	while (1)//检查孤立文字
 	{
 		GetSingleValue_in_value(index_value_p, &isTrue);
 		if (!isTrue)
@@ -626,7 +666,7 @@ bool DPLL()
 	{
 		isTrue = (int*)malloc(sizeof(int));
 	}
-	while (1)
+	while (1)//检查纯文字
 	{
 		GetPureValue(index_value_p, &isTrue);
 		if (!isTrue)
@@ -637,10 +677,11 @@ bool DPLL()
 	{
 		isTrue = (int*)malloc(sizeof(int));
 	}
-	{
+	{//检查赋值是否合理
 		if (CheckEmptyCNF())//没有句子
 		{
 			MyPrintResult();
+			WriteRes(count_solution, -1);
 			RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
 			return true;
 		}
@@ -653,14 +694,14 @@ bool DPLL()
 	
 
 	bool state = false;
-	ChooseValue(index_value_p, isTrue);
-	if (*isTrue == -1)
+	ChooseValue(index_value_p, isTrue);//选择变量及其优先赋值的真假
+	if (*isTrue == -1)//优先赋值为假
 	{
 		*isTrue = -1;
 		SetValue(index_value_p, isTrue, &stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
 		state = DPLL();
 		RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
-		if (state)
+		if (state)//已满足就返回
 		{
 			return true;
 		}
@@ -670,13 +711,13 @@ bool DPLL()
 		RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
 		return state;
 	}
-	else
+	else//优先赋值为真
 	{
 		*isTrue = 1;
 		SetValue(index_value_p, isTrue, &stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
 		state = DPLL();
 		RevertChange(&stack_RemovedValue, &stack_RemovedClauseHead, &stack_RemovedValueHead);
-		if (state)
+		if (state)//已满足就返回
 		{
 			return true;
 		}

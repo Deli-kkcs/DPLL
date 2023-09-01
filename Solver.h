@@ -24,4 +24,5 @@ void RevertChange
 	struct Stack_ValueHead** f_stack_RemovedValueHead
 );
 void MyPrintResult();
+void WriteRes(int count_solution, double time);
 bool DPLL();

@@ -1,21 +1,25 @@
 #include"Definition.h"
 #include"CNF_Reader.h"
 #include"Solver.h"
+//在文件中读取string
 void MyGetString(char t[10])
 {
 	fscanf(fp_InPut_CNF,"%s", t);
 	//scanf("%s", t);
 }
+//在文件中读取char
 void MyGetChar(char *f_char)
 {
 	fscanf(fp_InPut_CNF, "%c", f_char);
 	//return getchar();
 }
+//在文件中读取int
 void MyGetInt(int *f_int)
 {
 	fscanf(fp_InPut_CNF,"%d", f_int);
 	//scanf("%d", f_int);
 }
+//除掉以c开头的注释行
 char GetLine_Exclude_C()
 {
 	char t = '0';
@@ -31,6 +35,7 @@ char GetLine_Exclude_C()
 	}
 	return t;
 }
+//将string类型的数字转化为int
 int Change_string_to_int(char t[10])
 {
 	int loc = 0,ans = 0;
@@ -42,6 +47,7 @@ int Change_string_to_int(char t[10])
 	}
 	return ans;
 }
+//创建并返回新变量节点
 struct ValueNode* CreateNewValueNode(bool isNegative, int index_value,int index_clause)
 {
 	struct ValueNode* new_value =(struct ValueNode*)malloc(sizeof(struct ValueNode));
@@ -55,6 +61,7 @@ struct ValueNode* CreateNewValueNode(bool isNegative, int index_value,int index_
 	new_value->nextValue_in_value = NULL;
 	return new_value;
 }
+//增加出现次数
 void AddCountAppear(int f_index_value)
 {
 	int this_index_sorted = count_valueAppear[f_index_value].m_index_sorted;
@@ -88,6 +95,7 @@ void AddCountAppear(int f_index_value)
 		this_index_sorted--;
 	}
 }
+//减去出现次数
 void MinusCountAppear(int f_index_value)
 {
 	int this_index_sorted = count_valueAppear[f_index_value].m_index_sorted;
@@ -121,6 +129,7 @@ void MinusCountAppear(int f_index_value)
 		this_index_sorted--;
 	}
 }
+//增加正|负数出现次数
 void AddCountPoN(int f_index_value , bool f_isNegative)
 {
 	if (f_isNegative)
@@ -190,6 +199,7 @@ void AddCountPoN(int f_index_value , bool f_isNegative)
 		}
 	}
 }
+//减去正|负数出现次数
 void MinusCountPoN(int f_index_value, bool f_isNegative)
 {
 	int this_index_sorted = count_P[f_index_value].m_index_sorted;
@@ -260,6 +270,7 @@ void MinusCountPoN(int f_index_value, bool f_isNegative)
 		}
 	}
 }
+//在句子中添加下一个变量节点
 void AddNextValue_of_Clause(int index_clause,struct ValueNode* new_value)
 {
 	if (!clausesHead[index_clause].latestValue_in_clause)
@@ -276,6 +287,7 @@ void AddNextValue_of_Clause(int index_clause,struct ValueNode* new_value)
 	clausesHead[index_clause].latestValue_in_clause = new_value;
 	clausesHead[index_clause].count_activeValue++;
 }
+//变量添加下一个出现位置
 void AddNextValue_of_Value(int index_value,struct ValueNode* new_value)
 {
 	if (!valuesHead[index_value].nextValue_in_value)
@@ -293,6 +305,7 @@ void AddNextValue_of_Value(int index_value,struct ValueNode* new_value)
 	AddCountAppear(index_value);
 	AddCountPoN(index_value , new_value->isNegative);
 }
+//根据数组创建变量头节点链表
 void CreateValueHeadLink()
 {
 	struct ValueHeadNode* last = &valuesHeadHead;
@@ -307,6 +320,7 @@ void CreateValueHeadLink()
 		last = &valuesHead[i];
 	}
 }
+//根据数组创建子句头节点链表
 void CreateClauseHeadLink()
 {
 	struct ClauseHeadNode* last = &clausesHeadHead;
@@ -320,6 +334,7 @@ void CreateClauseHeadLink()
 		last = &clausesHead[i];
 	}
 }
+//读取子句
 void ReadClause(int index_clause)
 {
 	while (1)
@@ -347,6 +362,7 @@ void ReadClause(int index_clause)
 	}
 	
 }
+//读取cnf
 void ReadCNF(char t)
 {
 	if (t != 'p')
@@ -409,6 +425,7 @@ void ReadCNF(char t)
 	CreateValueHeadLink();
 	CreateClauseHeadLink();
 }
+//自测时读取变量的赋值
 void ReadValue()
 {
 	for (int i = 1; i <= count_value; i++)
@@ -429,6 +446,7 @@ void ReadValue()
 		}
 	}
 }
+//自测时检验变量的赋值
 bool CheckValue()
 {
 	for (int i = 0; i < count_clause; i++)
